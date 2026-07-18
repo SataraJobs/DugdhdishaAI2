@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>दुग्ध दिशा AI - लॉगिन</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e8f5e9; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .login-container { background: #ffffff; width: 90%; max-width: 400px; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; overflow: hidden; margin: 20px 0;}
+        
+        .logo-area img { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .logo-area h1 { margin: 0; font-size: 24px; color: #1b5e20; font-weight: 900; }
+        .logo-area p { margin: 5px 0 20px; font-size: 13px; color: #666; }
+
+        .tabs { display: flex; background: #f1f8e9; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+        .tab { flex: 1; padding: 12px; font-size: 14px; font-weight: bold; color: #555; cursor: pointer; transition: 0.3s; }
+        .tab.active { background: #2e7d32; color: white; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 12px; font-weight: bold; color: #444; margin-bottom: 5px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; box-sizing: border-box; background: #fafafa; font-family: inherit;}
+        .input-group input:focus, .input-group select:focus { border-color: #2e7d32; outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);}
+
+        /* OTP Styles */
+        .divider { display: flex; align-items: center; text-align: center; margin: 15px 0; color: #888; font-size: 12px; font-weight: bold; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #ddd; }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        .btn-otp { background: #fff; color: #2e7d32; border: 1px solid #2e7d32; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; float: right; margin-top: -30px; position: relative; z-index: 2; transition: 0.2s;}
+        .btn-otp:active { transform: scale(0.95); }
+
+        .btn-primary { background: linear-gradient(145deg, #2e7d32, #1b5e20); color: white; width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #1b5e20; margin-top: 10px; transition: 0.3s; }
+        .btn-primary:active { top: 4px; box-shadow: 0 0 0 #1b5e20; position: relative; }
+
+        .btn-outline { background: transparent; border: 2px solid #2e7d32; color: #2e7d32; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 14px;}
+
+        .forgot-password { display: block; text-align: right; font-size: 12px; color: #1976d2; margin-top: 5px; cursor: pointer; font-weight: bold; }
+        
+        /* Security Box */
+        .security-box { background: #fff8e1; padding: 15px; border-radius: 10px; border: 1px dashed #ffb300; margin-bottom: 15px; text-align: left;}
+        .security-box p { font-size: 11px; color: #f57c00; font-weight: bold; margin: 0 0 10px; }
+        
+        /* GPS Box */
+        .gps-box { background: #e8f5e9; border: 1px dashed #4caf50; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px;}
+        
+        /* Modal for Forgot Password */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.2);}
+        .modal-content h3 { margin-top: 0; color: #1b5e20; border-bottom: 2px solid #eee; padding-bottom: 10px;}
+        .close-btn { background: #e0e0e0; color: #333; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; box-shadow: 0 3px 0 #bdbdbd;}
+        .close-btn:active { top: 3px; box-shadow: none; position: relative;}
+
+        /* Loader Animation */
+        .loader-text { font-size: 10px; color: #2e7d32; font-weight: bold; display: none; margin-top: 3px; }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="logo-area">
+        <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
+        <h1>दुग्ध दिशा AI</h1>
+        <p>प्रगत डेअरी इकोसिस्टम</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" id="tab_login" onclick="switchTab('login')">लॉगिन (Login)</div>
+        <div class="tab" id="tab_register" onclick="switchTab('register')">नवीन खाते (Sign Up)</div>
+    </div>
+
+    <!-- 🔑 LOGIN FORM -->
+    <div id="form_login">
+        <div class="input-group">
+            <label>मोबाईल नंबर</label>
+            <input type="tel" id="login_mobile" placeholder="उदा. 9876543210" maxlength="10">
+        </div>
+        
+        <div class="input-group">
+            <label>पासवर्ड</label>
+            <input type="password" id="login_password" placeholder="••••••••">
+            <span class="forgot-password" onclick="openForgotModal()">पासवर्ड विसरलात? (Forgot Password)</span>
+        </div>
+
+        <div class="divider">किंवा (OR)</div>
+
+        <!-- 🔥 OTP SECTION 🔥 -->
+        <div class="input-group" id="otp_group">
+            <label>OTP ने लॉगिन करा</label>
+            <input type="number" id="login_otp" placeholder="४ अंकी OTP" maxlength="4" style="letter-spacing: 5px;">
+            <button class="btn-otp" onclick="requestOTP()">Get OTP</button>
+        </div>
+
+        <button class="btn-primary" onclick="loginUser()">प्रवेश करा 🚀</button>
+    </div>
+
+    <!-- 📝 REGISTER FORM -->
+    <div id="form_register" style="display: none;">
+        <div class="input-group">
+            <label>तुमचे पूर्ण नाव *</label>
+            <input type="text" id="reg_name" placeholder="उदा. रामराव पाटील">
+        </div>
+        <div class="input-group">
+            <label>मोबाईल नंबर *</label>
+            <input type="tel" id="reg_mobile" placeholder="उदा. 9876543210" maxlength="10">
+        </div>
+        
+        <!-- AUTO-DETECT PINCODE AND MAHARASHTRA DISTRICTS -->
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div class="input-group" style="flex: 1; margin-bottom: 0;">
+                <label>पिनकोड (Auto-Detect)</label>
+                <input type="number" id="reg_pincode" placeholder="उदा. 415001" oninput="if(this.value.length > 6) this.value = this.value.slice(0,6);" onkeyup="checkPincodeAuto(this.value)">
+                <span class="loader-text" id="pin_loader">⏳ जिल्हा शोधत आहे...</span>
+            </div>
+            <div class="input-group" style="flex: 1; margin-bottom: 0;">
+                <label>जिल्हा</label>
+                <select id="reg_district">
+                    <option value="">-- निवडा --</option>
+                    <option value="अहमदनगर">अहमदनगर</option><option value="अकोला">अकोला</option><option value="अमरावती">अमरावती</option>
+                    <option value="छत्रपती संभाजीनगर">छत्रपती संभाजीनगर (औरंगाबाद)</option><option value="बीड">बीड</option><option value="भंडारा">भंडारा</option>
+                    <option value="बुलढाणा">बुलढाणा</option><option value="चंद्रपूर">चंद्रपूर</option><option value="धुळे">धुळे</option>
+                    <option value="गडचिरोली">गडचिरोली</option><option value="गोंदिया">गोंदिया</option><option value="हिंगोली">हिंगोली</option>
+                    <option value="जळगाव">जळगाव</option><option value="जालना">जालना</option><option value="कोल्हापूर">कोल्हापूर</option>
+                    <option value="लातूर">लातूर</option><option value="मुंबई शहर">मुंबई शहर</option><option value="मुंबई उपनगर">मुंबई उपनगर</option>
+                    <option value="नागपूर">नागपूर</option><option value="नांदेड">नांदेड</option><option value="नंदुरबार">नंदुरबार</option>
+                    <option value="धाराशिव">धाराशिव (उस्मानाबाद)</option><option value="पालघर">पालघर</option><option value="परभणी">परभणी</option>
+                    <option value="पुणे">पुणे</option><option value="रायगड">रायगड</option><option value="रत्नागिरी">रत्नागिरी</option>
+                    <option value="सांगली">सांगली</option><option value="सातारा">सातारा</option><option value="सिंधुदुर्ग">सिंधुदुर्ग</option>
+                    <option value="सोलापूर">सोलापूर</option><option value="ठाणे">ठाणे</option><option value="वर्धा">वर्धा</option>
+                    <option value="वाशिम">वाशिम</option><option value="यवतमाळ">यवतमाळ</option><option value="इतर">इतर (Other)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>पासवर्ड तयार करा *</label>
+            <input type="password" id="reg_password" placeholder="नवीन पासवर्ड टाका">
+        </div>
+        
+        <div class="security-box">
+            <p>सुरक्षा प्रश्न (पासवर्ड विसरल्यास उपयोगी पडेल)</p>
+            <div class="input-group" style="margin-bottom: 10px;">
+                <select id="reg_sec_question">
+                    <option value="pet">तुमच्या पहिल्या पाळीव प्राण्याचे नाव काय?</option>
+                    <option value="color">तुमचा आवडता रंग कोणता?</option>
+                    <option value="friend">तुमच्या बालपणीच्या मित्राचे नाव काय?</option>
+                    <option value="food">तुमचा आवडता खाद्यपदार्थ कोणता?</option>
+                </select>
+            </div>
+            <div class="input-group" style="margin-bottom: 0;">
+                <input type="text" id="reg_sec_answer" placeholder="प्रश्नाचे उत्तर लिहा (उदा. मोती, निळा)">
+            </div>
+        </div>
+
+        <!-- 🔥 NEW: GPS LOCATION FIELD FOR FARMERS 🔥 -->
+        <div class="gps-box">
+            <h4 style="margin:0 0 5px; color:#2e7d32; font-size: 14px;">📍 तुमचे लोकेशन द्या (GPS)</h4>
+            <p style="font-size:11px; color:#555; margin-bottom:10px;">हे ॲपला तुमच्या जवळचे डॉक्टर (Vet Partners) शोधण्यास मदत करेल.</p>
+            <button class="btn-outline" onclick="getUserLocation()" id="btn_user_loc">📍 माझे लोकेशन मिळवा</button>
+            <div id="user_loc_display" style="font-size:11px; font-weight:bold; color:#1565c0; margin-top:5px; display:none;"></div>
+            <input type="hidden" id="reg_lat"><input type="hidden" id="reg_lon">
+        </div>
+
+        <button class="btn-primary" onclick="registerUser()">खाते उघडा 📝</button>
+    </div>
+</div>
+
+<!-- 🔐 FORGOT PASSWORD MODAL -->
+<div class="modal" id="forgot_modal">
+    <div class="modal-content">
+        <h3>पासवर्ड रिकव्हर करा</h3>
+        <p style="font-size: 12px; color: #555; margin-bottom: 15px;">नवीन पासवर्ड सेट करण्यासाठी तुमचा रजिस्टर केलेला मोबाईल नंबर आणि सुरक्षा प्रश्नाचे योग्य उत्तर द्या.</p>
+        
+        <div class="input-group">
+            <label>तुमचा मोबाईल नंबर</label>
+            <input type="tel" id="recover_mobile" placeholder="मोबाईल नंबर टाका" maxlength="10">
+        </div>
+        
+        <div class="input-group">
+            <label>तुम्ही निवडलेला सुरक्षा प्रश्न</label>
+            <select id="recover_sec_question">
+                <option value="pet">तुमच्या पहिल्या पाळीव प्राण्याचे नाव काय?</option>
+                <option value="color">तुमचा आवडता रंग कोणता?</option>
+                <option value="friend">तुमच्या बालपणीच्या मित्राचे नाव काय?</option>
+                <option value="food">तुमचा आवडता खाद्यपदार्थ कोणता?</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>प्रश्नाचे उत्तर</label>
+            <input type="text" id="recover_sec_answer" placeholder="उत्तर लिहा">
+        </div>
+
+        <button class="btn-primary" onclick="verifyRecovery()">तपासा व नवीन पासवर्ड सेट करा</button>
+        <button class="close-btn" onclick="closeForgotModal()">बंद करा (Cancel)</button>
+    </div>
+</div>
+
+<script>
+    // --- 🔄 Tab Switching Logic ---
+    function switchTab(tab) {
+        if(tab === 'login') {
+            document.getElementById('tab_login').classList.add('active');
+            document.getElementById('tab_register').classList.remove('active');
+            document.getElementById('form_login').style.display = 'block';
+            document.getElementById('form_register').style.display = 'none';
+        } else {
+            document.getElementById('tab_register').classList.add('active');
+            document.getElementById('tab_login').classList.remove('active');
+            document.getElementById('form_register').style.display = 'block';
+            document.getElementById('form_login').style.display = 'none';
+        }
+    }
+
+    // --- 📍 GET GPS LOCATION (NEW) ---
+    function getUserLocation() {
+        let btn = document.getElementById('btn_user_loc');
+        btn.innerText = "⏳ लोकेशन शोधत आहे...";
+        
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById('reg_lat').value = position.coords.latitude;
+                document.getElementById('reg_lon').value = position.coords.longitude;
+                
+                btn.innerText = "📍 लोकेशन अपडेट झाले";
+                btn.style.background = "#2e7d32"; 
+                btn.style.color = "white";
+                
+                let display = document.getElementById('user_loc_display');
+                display.style.display = 'block';
+                display.innerText = `✅ Coordinates Saved (Lat: ${position.coords.latitude.toFixed(4)}, Lon: ${position.coords.longitude.toFixed(4)})`;
+            }, function(error) { 
+                alert("लोकेशन घेण्यास अडचण! कृपया तुमच्या डिव्हाईसचे Location/GPS चालू करा."); 
+                btn.innerText = "📍 माझे लोकेशन मिळवा"; 
+            });
+        } else {
+            alert("तुमचा ब्राऊझर GPS ला सपोर्ट करत नाही.");
+        }
+    }
+
+    // --- 📍 AUTO-DETECT DISTRICT FROM PINCODE USING POSTAL API ---
+    async function checkPincodeAuto(pincode) {
+        let loader = document.getElementById('pin_loader');
+        
+        if (pincode.length === 6) {
+            loader.style.display = "block";
+            try {
+                let response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+                let data = await response.json();
+                
+                if (data && data[0] && data[0].Status === "Success") {
+                    let districtEng = data[0].PostOffice[0].District;
+                    
+                    const districtMap = {
+                        "Ahmed Nagar": "अहमदनगर", "Ahmednagar": "अहमदनगर", "Akola": "अकोला", "Amravati": "अमरावती",
+                        "Aurangabad": "छत्रपती संभाजीनगर", "Beed": "बीड", "Bhandara": "भंडारा", "Buldhana": "बुलढाणा",
+                        "Chandrapur": "चंद्रपूर", "Dhule": "धुळे", "Gadchiroli": "गडचिरोली", "Gondia": "गोंदिया",
+                        "Hingoli": "हिंगोली", "Jalgaon": "जळगाव", "Jalna": "जालना", "Kolhapur": "कोल्हापूर",
+                        "Latur": "लातूर", "Mumbai": "मुंबई शहर", "Mumbai Suburban": "मुंबई उपनगर", "Nagpur": "नागपूर",
+                        "Nanded": "नांदेड", "Nandurbar": "नंदुरबार", "Osmanabad": "धाराशिव", "Palghar": "पालघर",
+                        "Parbhani": "परभणी", "Pune": "पुणे", "Raigarh(MH)": "रायगड", "Raigad": "रायगड",
+                        "Ratnagiri": "रत्नागिरी", "Sangli": "सांगली", "Satara": "सातारा", "Sindhudurg": "सिंधुदुर्ग",
+                        "Solapur": "सोलापूर", "Thane": "ठाणे", "Wardha": "वर्धा", "Washim": "वाशिम", "Yavatmal": "यवतमाळ"
+                    };
+
+                    let marathiDistrict = districtMap[districtEng];
+                    let selectBox = document.getElementById('reg_district');
+
+                    if (marathiDistrict) {
+                        selectBox.value = marathiDistrict;
+                        loader.innerText = "✅ " + marathiDistrict + " सापडला!";
+                        loader.style.color = "#1b5e20";
+                    } else {
+                        selectBox.value = "इतर";
+                        loader.innerText = "⚠️ जिल्हा सापडला नाही.";
+                        loader.style.color = "#d32f2f";
+                    }
+                } else {
+                    loader.innerText = "❌ चुकीचा पिनकोड.";
+                    loader.style.color = "#d32f2f";
+                }
+            } catch (error) {
+                console.error("API Error: ", error);
+                loader.innerText = "⚠️ इंटरनेट एरर.";
+            }
+            setTimeout(() => { loader.style.display = "none"; }, 3000);
+        } else {
+            loader.style.display = "none";
+        }
+    }
+
+    // --- 📝 REGISTRATION LOGIC ---
+    function registerUser() {
+        let name = document.getElementById('reg_name').value.trim();
+        let mobile = document.getElementById('reg_mobile').value.trim();
+        let pincode = document.getElementById('reg_pincode').value.trim();
+        let district = document.getElementById('reg_district').value;
+        let pass = document.getElementById('reg_password').value;
+        let secQ = document.getElementById('reg_sec_question').value;
+        let secA = document.getElementById('reg_sec_answer').value.trim().toLowerCase(); 
+        
+        let lat = document.getElementById('reg_lat').value;
+        let lon = document.getElementById('reg_lon').value;
+        
+        // Basic Validations
+        if(!name || !mobile || !pass || !secA) {
+            alert("कृपया सर्व आवश्यक माहिती (*) भरा आणि सुरक्षा प्रश्नाचे उत्तर नक्की द्या.");
+            return;
+        }
+
+        if(mobile.length !== 10) {
+            alert("मोबाईल नंबर १० अंकी असणे आवश्यक কাশী.");
+            return;
+        }
+
+        if(!pincode && !district) {
+            alert("कृपया तुमचा पिनकोड टाका किंवा जिल्ह्याचे नाव निवडा.");
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('app_users')) || [];
+        let exists = users.find(u => u.mobile === mobile);
+        if(exists) {
+            alert("हा मोबाईल नंबर आधीच रजिस्टर आहे. कृपया थेट लॉगिन करा.");
+            return;
+        }
+
+        let newUser = {
+            name: name,
+            mobile: mobile,
+            pincode: pincode,
+            district: district,
+            lat: lat ? parseFloat(lat) : null,
+            lon: lon ? parseFloat(lon) : null,
+            role: 'farmer', 
+            password: pass,
+            secQuestion: secQ,
+            secAnswer: secA,
+            isVerified: true 
+        };
+
+        users.push(newUser);
+        localStorage.setItem('app_users', JSON.stringify(users));
+
+        alert("🎉 अभिनंदन! तुमचे खाते यशस्वीरित्या तयार झाले आहे. आता तुम्ही लॉगिन करू शकता.");
+        
+        // Reset and switch
+        document.getElementById('reg_name').value = '';
+        document.getElementById('reg_mobile').value = '';
+        document.getElementById('reg_pincode').value = '';
+        document.getElementById('reg_district').value = '';
+        document.getElementById('reg_password').value = '';
+        document.getElementById('reg_sec_answer').value = '';
+        document.getElementById('reg_lat').value = '';
+        document.getElementById('reg_lon').value = '';
+        
+        switchTab('login');
+    }
+
+    // --- 🔥 OTP MOCK FUNCTION 🔥 ---
+    function requestOTP() {
+        let mobile = document.getElementById('login_mobile').value.trim();
+        if(!mobile || mobile.length !== 10) {
+            alert("कृपया आधी १० अंकी योग्य मोबाईल नंबर टाका.");
+            return;
+        }
+        alert("📲 " + mobile + " या नंबरवर OTP पाठवला आहे. (सध्या डेमोसाठी कोणताही ४ अंकी OTP टाका).");
+    }
+
+    // --- 🚀 LOGIN LOGIC WITH OTP SUPPORT ---
+    function loginUser() {
+        let mobile = document.getElementById('login_mobile').value.trim();
+        let pass = document.getElementById('login_password').value;
+        let otp = document.getElementById('login_otp').value;
+        
+        if(!mobile) {
+            alert("कृपया मोबाईल नंबर टाका.");
+            return;
+        }
+
+        if(!pass && !otp) {
+            alert("कृपया पासवर्ड किंवा OTP यापैकी एक टाका.");
+            return;
+        }
+
+        // 👑 SUPER ADMIN CHECK 
+        if(mobile === "9579535290" && (pass === "210890" || otp === "1234")) {
+            localStorage.setItem("current_logged_in_role", "admin");
+            alert("सुपर ॲडमिन लॉगिन यशस्वी! 👑");
+            window.location.href = "admin_settings.html"; 
+            return; 
+        }
+
+        let users = JSON.parse(localStorage.getItem('app_users')) || [];
+        
+        // Find user by mobile first
+        let foundUser = users.find(u => u.mobile === mobile);
+
+        if(foundUser) {
+            if(foundUser.password === pass || (otp && otp.length === 4)) {
+                localStorage.setItem("current_logged_in_role", foundUser.role);
+                localStorage.setItem("current_user_name", foundUser.name);
+                localStorage.setItem("current_user_mobile", foundUser.mobile); 
+                localStorage.setItem("vendor_verified", foundUser.isVerified); 
+                
+                if(foundUser.district) localStorage.setItem("current_user_district", foundUser.district);
+                if(foundUser.pincode) localStorage.setItem("current_user_pincode", foundUser.pincode);
+                
+                // Set GPS for Vet logic
+                if(foundUser.lat && foundUser.lon) {
+                    localStorage.setItem("farmer_lat", foundUser.lat);
+                    localStorage.setItem("farmer_lon", foundUser.lon);
+                }
+
+                alert(`डॅशबोर्ड मध्ये स्वागत आहे, ${foundUser.name}! 👨‍🌾`);
+                window.location.href = "index.html"; 
+            } else {
+                alert("❌ पासवर्ड किंवा OTP चुकीचा आहे. कृपया पुन्हा तपासा.");
+            }
+        } else {
+            alert("❌ हा मोबाईल नंबर रजिस्टर नाही. कृपया नवीन खाते उघडा.");
+        }
+    }
+
+    // --- 🔐 FORGOT PASSWORD LOGIC ---
+    function openForgotModal() {
+        document.getElementById('forgot_modal').style.display = 'flex';
+    }
+
+    function closeForgotModal() {
+        document.getElementById('forgot_modal').style.display = 'none';
+        document.getElementById('recover_mobile').value = '';
+        document.getElementById('recover_sec_answer').value = '';
+    }
+
+    function verifyRecovery() {
+        let mobile = document.getElementById('recover_mobile').value.trim();
+        let qType = document.getElementById('recover_sec_question').value;
+        let ans = document.getElementById('recover_sec_answer').value.trim().toLowerCase();
+
+        if(!mobile || !ans) {
+            alert("कृपया मोबाईल नंबर आणि प्रश्नाचे उत्तर भरा.");
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('app_users')) || [];
+        let userIndex = users.findIndex(u => u.mobile === mobile);
+
+        if(userIndex === -1) {
+            alert("हा मोबाईल नंबर आमच्या सिस्टीममध्ये रजिस्टर नाही.");
+            return;
+        }
+
+        if(users[userIndex].secQuestion === qType && users[userIndex].secAnswer === ans) {
+            let newPass = prompt("✅ तुमची ओळख पटली आहे! कृपया तुमचा नवीन पासवर्ड सेट करा:");
+            
+            if(newPass && newPass.trim() !== "") {
+                users[userIndex].password = newPass; 
+                localStorage.setItem('app_users', JSON.stringify(users)); 
+                
+                alert("🎉 नवीन पासवर्ड यशस्वीरित्या सेट झाला आहे. आता तुम्ही नवीन पासवर्डने लॉगिन करू शकता.");
+                closeForgotModal();
+            } else {
+                alert("पासवर्ड बदलण्याची प्रक्रिया रद्द केली.");
+            }
+        } else {
+            alert("❌ सुरक्षा प्रश्नाचे उत्तर चुकीचे आहे. कृपया पुन्हा प्रयत्न करा.");
+        }
+    }
+</script>
+
+</body>
+</html>

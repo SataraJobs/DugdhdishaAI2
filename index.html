@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>दुग्ध दिशा AI - सुपर डॅशबोर्ड</title>
     
-    <!-- 🔥 ऑटो-रीडायरेक्ट सिस्टीम: ॲप उघडल्या-उघडल्या डीलरला डीलर डॅशबोर्डवर पाठवा 🔥 -->
+    <!-- 🔥 ऑटो-रीडायरेक्ट सिस्टीम आणि सिक्युरिटी लॉक 🔥 -->
     <script>
+        // 🔒 सिक्युरिटी चेक: जर युजरने लॉगिन केले नसेल, तर थेट लॉगिन पेजवर पाठवा
+        if (!localStorage.getItem("current_logged_in_role")) {
+            window.location.replace("login.html");
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             // चेक करा युजर डीलर आहे का (रोल तपासा म्हणजे नवीन शेतकरी युजरला हा टॅब दिसणार नाही)
             let role = localStorage.getItem("current_logged_in_role");

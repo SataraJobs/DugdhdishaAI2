@@ -731,20 +731,7 @@
                     <h4>🎯 Lead Generation (Pay-Per-Lead)</h4>
                     <p style="font-size: 13px; color: #666; margin-bottom: 20px;">इथे तुम्हाला शेतकऱ्यांच्या महागड्या उपकरणांची मोठ्या ऑर्डर्सची चौकशी दिसेल. वॉलेटमधून फी भरून लीड अनलॉक करा.</p>
                     
-                    <div class="locked-lead" style="margin-bottom: 20px; border-left: 4px solid #ff9800;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <h5 style="margin: 0; color:#e65100; font-size: 15px;">📍 सातारा येथून तातडीची मागणी</h5>
-                            <span style="font-size: 11px; background: #ffe0b2; padding: 4px 8px; border-radius: 4px; color: #e65100; font-weight: bold;">High Intent Buyer</span>
-                        </div>
-                        <p style="margin: 0 0 15px; font-size: 14px; font-weight: bold; color: #333;">"मला पुढील आठवड्यात २ डबल-बकेट मिल्किंग मशीन हव्या आहेत. माझे बजेट ₹६०,००० आहे."</p>
-                        <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                            <div>
-                                <div style="font-size: 12px; color: #666;">शेतकऱ्याचे नाव: <b>अ*** प***</b></div>
-                                <div style="font-size: 15px; color: #333; margin-top: 5px; font-weight: bold;">मोबाईल: <span class="blur-mobile">+91 9876***XXX</span></div>
-                            </div>
-                            <button class="btn-action" style="background: #1565c0; width: auto;" onclick="unlockLead(this, '+91 9876543210', 'अविनाश पाटील')">🔒 Unlock Lead (₹९९)</button>
-                        </div>
-                    </div>
+                    <div id="leads_container"></div>
                 </div>
             </div>
             
@@ -855,7 +842,7 @@
                     <div class="info-accordion" onclick="this.classList.toggle('open')">
                         <div class="info-accordion-header">१२. Farmer Database <span>▼</span></div>
                         <div class="info-accordion-body">
-                            <b>उपयोग:</b> तुमच्या परिसरातील (जिल्ह्यातील) शेतकरी कोणता चारा किंवा खाद्य वापरत आहेत याची ढोबळ माहिती पाहण्यासाठी.<br>
+                            <b>उपयोग:</b> तुमच्या परिसरातील (जिल्ह्यातील) शेतकरी कोणता चारा किंवा खाद्य वापरत সাস याची ढोबळ माहिती पाहण्यासाठी.<br>
                             <b>फायदा:</b> शेतकऱ्यांच्या गरजा ओळखून तुम्ही नवीन प्रॉडक्ट्स बाजारात आणू शकता.<br>
                             <b>रिफ्लेक्ट कुठे होणार?:</b> ही फक्त तुमच्या माहितीसाठी (Analytics) आहे.
                         </div>
@@ -1560,14 +1547,42 @@
             let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
             let myLeads = appNotifs.filter(n => n.receiver_mobile === myName || n.receiver_mobile === myMobile);
             
+            let leadsContainer = document.getElementById('leads_container');
+            if(leadsContainer) leadsContainer.innerHTML = '';
+            
             if(myLeads.length > 0) {
                 totalNotifs += myLeads.length;
+                let leadsHtml = '';
                 myLeads.forEach(lead => {
                     htmlList += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('b7');">
-                                    <strong style="color:#e65100;">${lead.title}</strong><br>
+                                    <strong style="color:#e65100;">${lead.title || 'नवीन लीड'}</strong><br>
                                     <span style="font-size:11px; color:#555;">${lead.message}</span>
                                  </div>`;
+                    
+                    let maskedName = lead.sender_name ? lead.sender_name.substring(0, 1) + '***' : 'शेतकरी';
+                    let realName = lead.sender_name || 'शेतकरी';
+                    let realMobile = lead.sender_mobile || '+91 9876543210';
+                    let dispTitle = lead.title || 'नवीन मागणी';
+
+                    leadsHtml += `
+                    <div class="locked-lead" style="margin-bottom: 20px; border-left: 4px solid #ff9800;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <h5 style="margin: 0; color:#e65100; font-size: 15px;">📍 ${dispTitle}</h5>
+                            <span style="font-size: 11px; background: #ffe0b2; padding: 4px 8px; border-radius: 4px; color: #e65100; font-weight: bold;">High Intent Buyer</span>
+                        </div>
+                        <p style="margin: 0 0 15px; font-size: 14px; font-weight: bold; color: #333;">"${lead.message}"</p>
+                        <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <div style="font-size: 12px; color: #666;">शेतकऱ्याचे नाव: <b>${maskedName}</b></div>
+                                <div style="font-size: 15px; color: #333; margin-top: 5px; font-weight: bold;">मोबाईल: <span class="blur-mobile">+91 9876***XXX</span></div>
+                            </div>
+                            <button class="btn-action" style="background: #1565c0; width: auto;" onclick="unlockLead(this, '${realMobile}', '${realName}')">🔒 Unlock Lead (₹९९)</button>
+                        </div>
+                    </div>`;
                 });
+                if(leadsContainer) leadsContainer.innerHTML = leadsHtml;
+            } else {
+                if(leadsContainer) leadsContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888; font-weight:bold;">सध्या कोणतीही नवीन लीड उपलब्ध नाही.</div>';
             }
 
             // 4. Check actual Shopping Orders for THIS vendor's products

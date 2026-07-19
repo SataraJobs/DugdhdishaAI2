@@ -1725,6 +1725,8 @@
                 let userIndex = users.findIndex(u => u.mobile === mobile);
                 if(userIndex > -1) {
                     users[userIndex].isVerified = true;
+                    users[userIndex].role = 'dealer'; // 🔥 हा अत्यंत महत्त्वाचा बदल!
+                    users[userIndex].kyc_status = 'approved';
                     localStorage.setItem('app_users', JSON.stringify(users));
                 }
 

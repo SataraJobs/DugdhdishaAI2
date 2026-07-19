@@ -43,8 +43,8 @@
         .banner { width: 100%; height: 140px; background: linear-gradient(145deg, #1565c0, #0d47a1); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .banner-tag { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); font-size: 10px; padding: 3px 8px; border-radius: 4px; color: #ffeb3b; border: 1px solid #ffeb3b;}
 
-        /* 4. AI Smart Shopping Feature */
-        .ai-recommendation { background: linear-gradient(145deg, #fff3e0, #ffe0b2); margin: 0 20px 20px; padding: 15px; border-radius: 16px; border: 1px solid #ffcc80; box-shadow: 0 6px 15px rgba(255, 152, 0, 0.15); position: relative; }
+        /* 4. AI Smart Shopping Feature (Hidden by default until dynamic) */
+        .ai-recommendation { background: linear-gradient(145deg, #fff3e0, #ffe0b2); margin: 0 20px 20px; padding: 15px; border-radius: 16px; border: 1px solid #ffcc80; box-shadow: 0 6px 15px rgba(255, 152, 0, 0.15); position: relative; display: none; }
         .ai-title { font-size: 14px; font-weight: 900; color: #e65100; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
         .ai-text { font-size: 12.5px; color: #555; font-weight: bold; line-height: 1.4; margin-bottom: 12px; }
         .ai-product { display: flex; background: white; padding: 10px; border-radius: 10px; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid #4caf50; }
@@ -211,20 +211,12 @@
 
     <!-- BANNERS & AI -->
     <div class="banner-container">
-        <div class="banner" id="dynamic_mall_banner"></div>
+        <div class="banner" id="dynamic_mall_banner" style="display: none;"></div>
     </div>
 
-    <div class="ai-recommendation">
-        <div class="ai-title">🤖 दुग्ध दिशा AI अलर्ट: रेशन कमतरता</div>
-        <div class="ai-text">तुमच्या कालच्या रेशन बॅलन्सर अहवालानुसार, गाईच्या आहारात <b>१२० ग्रॅम प्रोटीन (CP)</b> कमी आहे. दूध उत्पादन टिकवण्यासाठी खालील सुचवलेला घटक वापरा:</div>
-        <div class="ai-product">
-            <div style="background:#ddd; width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px;">🌾</div>
-            <div class="ai-prod-details">
-                <h4 class="ai-prod-name">सोयाबीन डी-ओसी (DOC)</h4>
-                <p class="ai-prod-price">₹४२ / किलो</p>
-            </div>
-            <button class="ai-add-btn" onclick="addToCart('p_ai', 'सोयाबीन डी-ओसी (DOC)', 42, '🌾', 'AI सुचवलेले', 'Feed')">+ Add</button>
-        </div>
+    <!-- AI Recommendation Container (Hidden until dynamic data is added) -->
+    <div class="ai-recommendation" id="ai_recommendation_container">
+        <!-- Live AI Recommendations will be shown here -->
     </div>
 
     <div class="quick-filters">
@@ -328,7 +320,7 @@
         <div class="detail-body" style="padding-bottom: 20px;">
             <h4 style="margin: 0 0 10px; font-size: 14px;">📍 डिलिव्हरीचा पत्ता (Shipping Address)</h4>
             <div class="form-group"><input type="text" id="chk_name" placeholder="पूर्ण नाव (उदा. रमेश पाटील)"></div>
-            <div class="form-group"><input type="number" id="chk_mobile" placeholder="मोबाईल नंबर (उदा. 9876543210)"></div>
+            <div class="form-group"><input type="number" id="chk_mobile" placeholder="मोबाईल नंबर (उदा. 9822XXXXXX)"></div>
             <div class="form-group"><textarea id="chk_address" rows="3" placeholder="संपूर्ण पत्ता (घर क्र., रस्ता, गाव...)"></textarea></div>
             <div class="form-group" style="display:flex; gap:10px;">
                 <div style="flex:1;"><input type="number" id="chk_pincode" placeholder="पिनकोड (415001)" onblur="calculateFinalBill()"></div>
@@ -417,6 +409,7 @@
                         let bgImg = ad.images && ad.images[0] ? `url(${ad.images[0]}) center/cover` : 'linear-gradient(145deg, #1565c0, #0d47a1)';
                         bannerBox.style.background = bgImg;
                         bannerBox.innerHTML = `<span class="banner-tag">Sponsored</span><div style="text-align:center; background:rgba(0,0,0,0.5); padding:10px; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer;" onclick="window.location.href='${ad.url || '#'}';"><span style="font-size:18px;">${ad.text || 'विशेष ऑफर'}</span></div>`;
+                        bannerBox.style.display = 'flex';
                     }
                 }
                 
@@ -439,8 +432,9 @@
                 }
             }
 
+            // डमी ॲड काढून टाकली आहे. जर लाइव्ह ॲड नसेल, तर बॅनर दिसणार नाही.
             if(!hasBannerAd && bannerBox) {
-                bannerBox.innerHTML = `<span class="banner-tag">Offer</span><div style="text-align:center;"><span style="font-size:22px;">🔥 महा सेल</span><br>सर्व खतांवर २०% पर्यंत सूट!</div>`;
+                bannerBox.style.display = 'none';
             }
 
             loadDynamicProducts(hasSponsorAd);
@@ -587,7 +581,6 @@
                 openCart();
             };
 
-            // 🔥 FIX: Request Quote Button Dynamically mapped with Supplier Info 🔥
             let quoteBtn = document.getElementById('detail_quote_btn');
             quoteBtn.onclick = function() {
                 requestQuote(prod.name, prod.vendorName);

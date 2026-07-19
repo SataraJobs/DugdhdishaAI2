@@ -145,7 +145,7 @@
         }
     </style>
 </head>
-<body onload="checkActivePlanOnLoad()">
+<body onload="initializeMarketPage()">
 
 <div class="app-container">
 
@@ -157,10 +157,10 @@
         </div>
     </div>
 
-    <!-- 🔥 ₹99 Premium Hook Banner 🔥 -->
+    <!-- 🔥 Premium Banner (Price will be updated dynamically) 🔥 -->
     <div class="premium-banner" id="top_upgrade_banner" onclick="handleAdCreation()">
         <div class="premium-text">
-            <h4>⭐ दिशा प्राईम (₹९९)</h4>
+            <h4>⭐ दिशा प्राईम (<span id="banner_price_text">₹९९</span>)</h4>
             <p>तुमचे जनावर <b>'Urgent'</b> टॅग लावून सर्वात वर दाखवा <br>आणि <b>प्रो रेशन बॅलन्सर</b> मोफत मिळवा!</p>
         </div>
         <button class="premium-btn">अपग्रेड करा</button>
@@ -172,64 +172,9 @@
         <div class="m-tab" onclick="switchTab(this)">माझ्या जाहिराती</div>
     </div>
 
-    <!-- Animal Listings -->
-    <div class="animal-list">
-        
-        <!-- 🔴 PREMIUM / URGENT CARD (Top Priority) -->
-        <div class="card premium">
-            <div class="urgent-badge">URGENT</div>
-            <div class="card-img">
-                <img src="https://images.unsplash.com/photo-1546447147-3fc2d8181a74?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="HF Cow">
-                <div class="price-tag">₹ ८५,०००</div>
-            </div>
-            <div class="card-content">
-                <h3 class="card-title">HF गाय (गाभण) <span class="location">📍 खटाव, सातारा</span></h3>
-                <div class="details-grid">
-                    <div class="detail-item">दूध: <strong>२२ लिटर</strong></div>
-                    <div class="detail-item">वेत: <strong>दुसरे</strong></div>
-                    <div class="detail-item">दात: <strong>४ दाती</strong></div>
-                    <div class="detail-item">गाभण: <strong>८ महिने</strong></div>
-                </div>
-                <a href="tel:+919876543210" class="call-btn">📞 मालकाला कॉल करा</a>
-            </div>
-        </div>
-
-        <!-- ⚪ NORMAL CARD -->
-        <div class="card">
-            <div class="card-img">
-                <img src="https://images.unsplash.com/photo-1596733430284-f74370601460?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Jersey Cow">
-                <div class="price-tag">₹ ५५,०००</div>
-            </div>
-            <div class="card-content">
-                <h3 class="card-title">जर्सी गाय <span class="location">📍 फलटण, सातारा</span></h3>
-                <div class="details-grid">
-                    <div class="detail-item">दूध: <strong>१४ लिटर</strong></div>
-                    <div class="detail-item">वेत: <strong>तिसरे</strong></div>
-                    <div class="detail-item">दात: <strong>जुळलेली</strong></div>
-                    <div class="detail-item">गाभण: <strong>रिकामी</strong></div>
-                </div>
-                <a href="tel:+919876543211" class="call-btn">📞 मालकाला कॉल करा</a>
-            </div>
-        </div>
-
-        <!-- ⚪ NORMAL CARD -->
-        <div class="card">
-            <div class="card-img">
-                <img src="https://images.unsplash.com/photo-1621516843470-349f7e8140db?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Buffalo">
-                <div class="price-tag">₹ १,१०,०००</div>
-            </div>
-            <div class="card-content">
-                <h3 class="card-title">मुऱ्हा म्हैस <span class="location">📍 कोरेगाव, सातारा</span></h3>
-                <div class="details-grid">
-                    <div class="detail-item">दूध: <strong>१६ लिटर</strong></div>
-                    <div class="detail-item">वेत: <strong>पहिले</strong></div>
-                    <div class="detail-item">दात: <strong>४ दाती</strong></div>
-                    <div class="detail-item">गाभण: <strong>नाही (ताजी व्यालेली)</strong></div>
-                </div>
-                <a href="tel:+919876543212" class="call-btn">📞 मालकाला कॉल करा</a>
-            </div>
-        </div>
-
+    <!-- 🔥 EMPTY CONTAINER FOR REAL ANIMALS (Dummy ads removed) 🔥 -->
+    <div class="animal-list" id="animal_list_container">
+        <!-- Live ads will be populated here via JavaScript -->
     </div>
 
     <!-- Floating Action Button to Add New Animal -->
@@ -245,7 +190,7 @@
         <p class="modal-desc">तुमची जाहिरात हजारो शेतकऱ्यांपर्यंत पोहोचवण्यासाठी कृपया <b>'दिशा प्राईम'</b> सबस्क्रिप्शन घ्या.</p>
         
         <div class="pay-amount-box">
-            <h2>₹ ९९</h2>
+            <h2 id="modal_price_text">₹ ९९</h2>
             <p>१ महिन्याच्या सबस्क्रिप्शनसाठी</p>
             <p style="color:#d32f2f; font-size:10px; margin-top:5px;">(तुम्ही एका महिन्यात कितीही जनावरे ॲड करू शकता)</p>
         </div>
@@ -264,7 +209,7 @@
         <div class="payment-form" id="payment_form_section">
             <div style="text-align: center; margin-bottom: 15px;">
                 <div style="font-weight:900; color:#1b5e20; font-size:16px;">दुग्ध दिशा AI</div>
-                <div style="font-size:12px; color:#e65100; font-weight:bold;">UPI ID: 9579535290@kotak</div>
+                <div style="font-size:12px; color:#e65100; font-weight:bold;">UPI ID: <span id="payment_upi_text">9579535290@kotak</span></div>
             </div>
             
             <a href="#" class="btn-pay-now" style="background:#1976d2; margin-bottom:15px;" onclick="triggerUPI()">📲 ॲपमधून थेट पे करा (GPay/PhonePe)</a>
@@ -304,6 +249,68 @@
 </div>
 
 <script>
+    // --- MAIN INITIALIZATION ---
+    function initializeMarketPage() {
+        checkActivePlanOnLoad();
+        loadRealMarketAnimals();
+    }
+
+    // --- 🔥 FETCH LIVE ANIMALS (Dynamic) 🔥 ---
+    function loadRealMarketAnimals() {
+        let container = document.getElementById('animal_list_container');
+        // Fetch real ads from localStorage (which admin or users will add)
+        let liveAnimals = JSON.parse(localStorage.getItem('market_animals')) || [];
+        
+        if(liveAnimals.length === 0) {
+            // Show empty state if no one has added any animal
+            container.innerHTML = `
+                <div style="text-align:center; padding: 40px 20px; color:#888;">
+                    <div style="font-size: 50px; margin-bottom: 10px; filter: grayscale(100%);">🐄</div>
+                    <div style="font-weight:bold; font-size: 16px; color:#555;">सध्या बाजारात कोणतेही जनावर उपलब्ध नाही.</div>
+                    <p style="font-size: 12px; margin-top: 5px;">तुमची जाहिरात देण्यासाठी खालील <b>+</b> बटनावर क्लिक करा!</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        liveAnimals.forEach(animal => {
+            // Build real cards based on actual data
+            let urgentBadge = animal.isUrgent ? `<div class="urgent-badge">URGENT</div>` : '';
+            let premiumClass = animal.isUrgent ? `premium` : '';
+            let imageSrc = (animal.images && animal.images[0]) ? animal.images[0] : 'https://via.placeholder.com/600x400?text=No+Photo';
+            
+            html += `
+            <div class="card ${premiumClass}">
+                ${urgentBadge}
+                <div class="card-img">
+                    <img src="${imageSrc}" alt="${animal.breed}">
+                    <div class="price-tag">₹ ${animal.price}</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${animal.breed} (${animal.type}) <span class="location">📍 ${animal.location}</span></h3>
+                    <div class="details-grid">
+                        <div class="detail-item">दूध: <strong>${animal.milk || '-'} लिटर</strong></div>
+                        <div class="detail-item">वेत: <strong>${animal.lactation || '-'}</strong></div>
+                        <div class="detail-item">दात: <strong>${animal.teeth || '-'}</strong></div>
+                        <div class="detail-item">गाभण: <strong>${animal.pregnant || '-'}</strong></div>
+                    </div>
+                    <a href="tel:+91${animal.mobile}" class="call-btn">📞 मालकाला कॉल करा</a>
+                </div>
+            </div>`;
+        });
+        
+        container.innerHTML = html;
+    }
+
+
+    // --- 🔥 DYNAMIC PRICING LOGIC 🔥 ---
+    function getSilverPlanPrice() {
+        let adminPrices = JSON.parse(localStorage.getItem('admin_data_M25')) || {};
+        let price = adminPrices.m25_f_silver !== undefined ? parseInt(adminPrices.m25_f_silver) : 99;
+        return price;
+    }
+
     function switchTab(clickedTab) {
         document.querySelectorAll('.m-tab').forEach(tab => tab.classList.remove('active'));
         clickedTab.classList.add('active');
@@ -313,21 +320,26 @@
         }
     }
 
-    // --- 🔥 SMART EXPIRY LOGIC (1 MONTH CHECK) 🔥 ---
+    // --- 🔥 SMART EXPIRY & BANNER LOGIC 🔥 ---
     function checkActivePlanOnLoad() {
+        let currentPrice = getSilverPlanPrice();
+        
+        document.getElementById('banner_price_text').innerText = currentPrice === 0 ? "मोफत (Free)" : `₹${currentPrice}`;
+        document.getElementById('modal_price_text').innerText = currentPrice === 0 ? "मोफत (Free)" : `₹${currentPrice}`;
+
         let activePlan = JSON.parse(localStorage.getItem('farmer_active_plan'));
         let topBanner = document.getElementById('top_upgrade_banner');
         
-        if (activePlan) {
+        if (currentPrice === 0) {
+            topBanner.style.display = 'none';
+        } else if (activePlan) {
             let now = new Date();
             let expiryDate = new Date(activePlan.expiryDate);
 
             if (now > expiryDate) {
-                // Plan Expired! Remove it so Gatekeeper triggers again.
                 localStorage.removeItem('farmer_active_plan');
                 topBanner.style.display = 'flex'; 
             } else {
-                // Plan is Active! Hide the promotional banner
                 topBanner.style.display = 'none'; 
             }
         }
@@ -335,32 +347,35 @@
 
     // --- 🔥 MASTER CLICK HANDLER (FOR '+' AND BANNER) 🔥 ---
     function handleAdCreation() {
+        let currentPrice = getSilverPlanPrice();
         let activePlan = JSON.parse(localStorage.getItem('farmer_active_plan'));
         
+        if (currentPrice === 0) {
+            alert("✅ ॲडमिनने आता जनावर ॲड करणे पूर्णपणे मोफत (Free) केले आहे!\n\n(येथे जनावराचा फोटो आणि माहिती ॲड करण्याचा फॉर्म उघडेल.)");
+            // window.location.href = "add_animal_form.html"; 
+            return;
+        }
+
         if (activePlan) {
             let now = new Date();
             let expiryDate = new Date(activePlan.expiryDate);
 
-            if (now <= expiryDate && (activePlan.name.includes("दिशा प्राईम") || activePlan.name.includes("Market"))) {
-                // ACTIVE PLAN = BYPASS POPUP & OPEN FORM DIRECTLY
-                alert("✅ तुमचे 'दिशा प्राईम' सबस्क्रिप्शन ॲक्टिव्ह आहे.\n\nतुम्ही आता १ महिन्यापर्यंत अमर्यादित (Unlimited) जनावरे ॲड करू शकता.\n\n(येथे जनावराचा फोटो आणि माहिती ॲड करण्याचा फॉर्म उघडेल.)");
-                // window.location.href = "add_animal_form.html"; // <-- In future, redirect to form here
+            if (now <= expiryDate && (activePlan.name.includes("दिशा प्राईम") || activePlan.name.includes("Market") || activePlan.name.includes("Silver"))) {
+                alert("✅ तुमचे 'दिशा प्राईम / सिल्व्हर' सबस्क्रिप्शन ॲक्टिव्ह आहे.\n\nतुम्ही आता १ महिन्यापर्यंत अमर्यादित (Unlimited) जनावरे ॲड करू शकता.\n\n(येथे जनावराचा फोटो आणि माहिती ॲड करण्याचा फॉर्म उघडेल.)");
+                // window.location.href = "add_animal_form.html"; 
                 return;
             }
         }
 
-        // NO ACTIVE PLAN = SHOW ₹99 GATEKEEPER POPUP
         openAddAnimalModal();
     }
 
     // --- 🔥 PREMIUM MODAL LOGIC 🔥 ---
     function openAddAnimalModal() {
-        // Reset Modal State
         document.getElementById('btn_init_pay').style.display = 'block';
         document.getElementById('payment_form_section').style.display = 'none';
         document.getElementById('btn_submit_utr').style.display = 'none';
         document.getElementById('payment_utr').value = '';
-        
         document.getElementById('add_animal_modal').style.display = 'flex';
     }
 
@@ -375,29 +390,32 @@
     }
 
     function triggerUPI() {
-        let amt = "99";
-        let upiId = "9579535290@kotak";
-        let payeeName = encodeURIComponent("Dugdha Disha AI");
+        let amt = getSilverPlanPrice();
+        let paymentSettings = JSON.parse(localStorage.getItem("admin_payment_settings")) || { payee_name: "दुग्ध दिशा AI", upi_id: "9579535290@kotak" };
+        
+        let upiId = paymentSettings.upi_id;
+        let payeeName = encodeURIComponent(paymentSettings.payee_name);
+        
         let upiLink = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amt}&cu=INR`;
         window.location.href = upiLink;
     }
 
     function submitAdRequest() {
         let utr = document.getElementById('payment_utr').value.trim();
+        let amtPaid = getSilverPlanPrice();
         
         if(!utr || utr.length < 10) {
             alert("⚠️ कृपया पेमेंट पूर्ण केल्यानंतर वैध (Valid) 12 अंकी UTR नंबर नक्की टाका.");
             return;
         }
 
-        // Save to LocalStorage for Admin Approval
         let pendingPayments = JSON.parse(localStorage.getItem('admin_pending_farmer_payments')) || [];
         pendingPayments.push({
             farmerName: localStorage.getItem("current_user_name") || "शेतकरी (Market User)",
             mobile: localStorage.getItem("current_user_mobile") || "Unknown",
-            name: "दिशा प्राईम (Market Ad) - 1 Month",
+            name: "Silver Pack (Market + Pro Ration) - 1 Month",
             type: "Monthly",
-            amount: 99,
+            amount: amtPaid,
             utr: utr,
             requestTime: new Date().toLocaleString()
         });

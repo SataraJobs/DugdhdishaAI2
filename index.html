@@ -929,44 +929,43 @@
         });
         document.getElementById("total_milk").innerText = todayMilk.toFixed(1) + " L";
 
-        // 🔥 NEW FIX: पेज लोड झाल्यावर नोटिफिकेशन बॅज (लाल आकडा) अपडेट करणे
+        // 🔥 FIX: पेज लोड झाल्यावर नोटिफिकेशन बॅज अपडेट करणे (फक्त स्वतःचे मेसेज)
         let myMobile = localStorage.getItem("current_user_mobile");
-        let adminNotifs = JSON.parse(localStorage.getItem('admin_notifications')) || [];
         let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-        let myAppNotifs = appNotifs.filter(n => n.receiver_mobile === myMobile || n.receiver_mobile === 'all');
-        let allMyNotifs = [...adminNotifs, ...myAppNotifs];
         
-        if(allMyNotifs.length > 0) {
+        // फक्त स्वतःच्या नंबरचे मेसेज घ्या
+        let myAppNotifs = appNotifs.filter(n => n.receiver_mobile === myMobile || n.receiver_mobile === 'all');
+        
+        if(myAppNotifs.length > 0) {
             let notifBadge = document.getElementById('notif_badge');
             notifBadge.style.display = 'block';
-            notifBadge.innerText = allMyNotifs.length;
+            notifBadge.innerText = myAppNotifs.length;
+        } else {
+            document.getElementById('notif_badge').style.display = 'none';
         }
     }
 
-    // 🔥 NEW FIX: फक्त स्वतःचे किंवा सर्वांसाठी असलेले नोटिफिकेशन्स दिसतील
+    // 🔥 FIX: फक्त स्वतःचे किंवा सर्वांसाठी असलेले नोटिफिकेशन्स दिसतील (Admin चे लपवले)
     function toggleNotifications() {
         const dropdown = document.getElementById('notificationDropdown');
         dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
         
         let myMobile = localStorage.getItem("current_user_mobile");
-        let adminNotifs = JSON.parse(localStorage.getItem('admin_notifications')) || []; // हे सर्वांना दिसेल
-        let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || []; // यात ऑर्डर्स असतात
+        let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || []; 
         
-        // फिल्टर: ज्या नोटिफिकेशनमध्ये रिसीव्हरचा मोबाईल नंबर माझा आहे, फक्त तेच दाखवा
+        // फिल्टर: ज्या नोटिफिकेशनमध्ये रिसीव्हरचा मोबाईल नंबर माझा आहे, फक्त तेच दाखवा.
+        // आता इथे 'adminNotifs' वाचले जाणार नाहीत.
         let myAppNotifs = appNotifs.filter(n => n.receiver_mobile === myMobile || n.receiver_mobile === 'all');
-        
-        // दोन्ही एकत्र करणे (Admin + Personal)
-        let allMyNotifs = [...adminNotifs, ...myAppNotifs];
         
         let notifList = document.getElementById('notif_list_container');
         let notifBadge = document.getElementById('notif_badge');
 
-        if(allMyNotifs.length > 0) {
+        if(myAppNotifs.length > 0) {
             notifBadge.style.display = 'block';
-            notifBadge.innerText = allMyNotifs.length;
+            notifBadge.innerText = myAppNotifs.length;
             
             let html = '';
-            allMyNotifs.forEach(n => {
+            myAppNotifs.forEach(n => {
                 html += `<div style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
                             <strong style="color:#d32f2f;">${n.title}</strong><br>
                             ${n.message}

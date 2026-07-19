@@ -89,7 +89,7 @@
         .btn-cart:active { top: 2px; position: relative; box-shadow: none; }
         .btn-icon { background: #f0f0f0; color: #555; border: none; padding: 8px; border-radius: 8px; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 
-        /* 7. Modals (Product & Cart) - 🔥 FIXED Z-INDEX 🔥 */
+        /* 7. Modals (Product & Cart) */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding-bottom: 70px; }
         .modal-header { position: sticky; top: 0; background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .modal-header h3 { margin: 0; font-size: 16px; font-weight: bold; }
@@ -97,12 +97,11 @@
         
         .prod-detail-img { width: 100%; height: 250px; object-fit: cover; background: #eee; }
         
-        /* 🔥 NEW: MULTIPLE IMAGES GALLERY STYLES 🔥 */
         .image-gallery-container { display: flex; gap: 10px; padding: 10px 20px; overflow-x: auto; background: #f9f9f9; border-bottom: 1px solid #eee; }
         .gallery-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 2px solid transparent; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .gallery-thumb.active { border-color: var(--primary); }
 
-        .detail-body { padding: 20px; }
+        .detail-body { padding: 20px; padding-bottom: 90px; }
         .detail-title { font-size: 20px; font-weight: 900; margin: 0 0 10px; }
         
         .nutrition-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
@@ -118,7 +117,7 @@
         .bottom-action-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px 20px; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); display: flex; gap: 10px; box-sizing: border-box; z-index: 100; }
         .btn-buy { flex: 2; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; box-shadow: 0 3px 0 #e65100; cursor: pointer;}
         .btn-buy:active { top: 2px; position: relative; box-shadow: none; }
-        .btn-quote { flex: 1; background: #fff; color: var(--primary); border: 2px solid var(--primary); border-radius: 8px; font-weight: bold; font-size: 12px; }
+        .btn-quote { flex: 1; background: #fff; color: var(--primary); border: 2px solid var(--primary); border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; }
         
         /* Custom Toast Alert */
         #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 12px; position: fixed; z-index: 2500; left: 50%; bottom: 30px; font-size: 14px; transform: translateX(-50%); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -135,75 +134,28 @@
         /* Qty Button */
         .qty-btn { background: #eee; border: none; width: 24px; height: 24px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         
-        /* 🔥 Action Buttons in Checkout 🔥 */
+        /* Checkout Actions */
         .checkout-actions { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #eee; background: #f9f9f9; padding: 15px 20px; }
         .btn-action-large { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 900; font-size: 15px; color: white; cursor: pointer; position: relative; }
         .btn-action-large:active { top: 2px; }
 
-        /* 🔥 FIX: CROP MODAL STYLES (Z-INDEX & CLICKS FIXED) 🔥 */
+        /* Crop Modal */
         .crop-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; overflow: hidden;}
         .crop-modal-content { background: transparent; width: 100%; max-width: 500px; padding: 20px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; position: relative;}
-        
         .crop-container { width: 100%; height: 50vh; max-height: 400px; background: #000; margin-bottom: 20px; display: block; position: relative;}
         #crop_image_element { display: block; max-width: 100%; height: auto; } 
-        
         .crop-controls { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; width: 100%; position: relative; z-index: 4000;}
         .crop-btn { background: #1976d2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; flex: 1; min-width: 80px; position: relative; z-index: 4000;}
         .crop-btn.save { background: #2e7d32; font-size: 15px; padding: 12px 20px;}
 
-        /* 🔥 BOTTOM NAVIGATION BAR STYLES 🔥 */
+        /* Bottom Nav */
         body { padding-bottom: 85px !important; }
-        
-        .bottom-nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 600px;
-            background: #ffffff;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 8px 0;
-            z-index: 1000;
-            border-radius: 15px 15px 0 0;
-        }
-        
-        .b-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #757575;
-            transition: 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 10px;
-        }
-        
-        .b-nav-icon {
-            font-size: 22px;
-            margin-bottom: 2px;
-            filter: grayscale(100%);
-            transition: 0.3s;
-        }
-        
-        .b-nav-text {
-            font-size: 10px;
-            font-weight: 800;
-        }
-        
-        /* Active State */
-        .b-nav-item.active {
-            background: #e8f5e9;
-            color: #1b5e20;
-        }
-        
-        .b-nav-item.active .b-nav-icon {
-            filter: grayscale(0%);
-            transform: scale(1.15);
-        }
+        .bottom-nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: #ffffff; box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08); display: flex; justify-content: space-around; align-items: center; padding: 8px 0; z-index: 1000; border-radius: 15px 15px 0 0; }
+        .b-nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #757575; transition: 0.3s ease; padding: 5px 10px; border-radius: 10px; }
+        .b-nav-icon { font-size: 22px; margin-bottom: 2px; filter: grayscale(100%); transition: 0.3s; }
+        .b-nav-text { font-size: 10px; font-weight: 800; }
+        .b-nav-item.active { background: #e8f5e9; color: #1b5e20; }
+        .b-nav-item.active .b-nav-icon { filter: grayscale(0%); transform: scale(1.15); }
     </style>
 </head>
 <body onload="initializeStore()">
@@ -231,15 +183,14 @@
             <input type="text" placeholder="पशुखाद्य, औषधे किंवा मशीन शोधा...">
             <div class="search-icons">
                 <span>🎤</span>
-                <!-- 🔥 Camera Icon triggers Crop Modal 🔥 -->
                 <span onclick="document.getElementById('camera_upload').click()">📷</span>
                 <input type="file" id="camera_upload" accept="image/*" style="display:none;" onchange="openCropModal(event)">
             </div>
         </div>
     </header>
 
-    <!-- 🔥 NEW: PRIME SUBSCRIPTION BANNER (B2C Model) -->
-    <div class="prime-banner" onclick="alert('दुग्ध दिशा प्राईम मेंबरशिप: ₹९९/महिना मध्ये मिळवा मोफत डिलिव्हरी आणि AI डॉक्टरांचा प्राधान्याने सपोर्ट! (पेमेंट गेटवे उघडेल)')">
+    <!-- PRIME BANNER -->
+    <div class="prime-banner" onclick="alert('दुग्ध दिशा प्राईम मेंबरशिप: ₹९९/महिना मध्ये मिळवा मोफत डिलिव्हरी आणि AI डॉक्टरांचा प्राधान्याने सपोर्ट!')">
         <div class="prime-banner-text">
             <h4>⭐ दुग्ध दिशा प्राईम</h4>
             <p>मोफत डिलिव्हरी + AI डॉक्टर सपोर्ट</p>
@@ -247,6 +198,7 @@
         <button class="prime-btn">Join Now (₹९९)</button>
     </div>
 
+    <!-- CATEGORIES -->
     <div class="scroll-section">
         <div class="category-item"><div class="cat-icon">🐄</div><span class="cat-name">पशुखाद्य</span></div>
         <div class="category-item"><div class="cat-icon">🌾</div><span class="cat-name">चारा/मुरघास</span></div>
@@ -257,10 +209,9 @@
         <div class="category-item"><div class="cat-icon">📚</div><span class="cat-name">पुस्तके</span></div>
     </div>
 
+    <!-- BANNERS & AI -->
     <div class="banner-container">
-        <div class="banner" id="dynamic_mall_banner">
-            <!-- JS will inject dynamic sponsored banner here -->
-        </div>
+        <div class="banner" id="dynamic_mall_banner"></div>
     </div>
 
     <div class="ai-recommendation">
@@ -289,17 +240,16 @@
         <a href="#">सर्व पहा &gt;</a>
     </div>
 
+    <!-- MAIN PRODUCT GRID -->
     <div class="product-grid" id="main_product_grid">
-        <!-- Dynamic Sponsored Product will be injected here if available -->
         <div id="dynamic_mineral_card" style="display: contents;"></div>
     </div>
     
-    <!-- Fallback if no products exist -->
     <div id="no_product_msg" style="text-align: center; padding: 20px; color: #888; font-weight: bold; display: none;">
         सध्या कोणतेही प्रॉडक्ट उपलब्ध नाही.
     </div>
 
-    <!-- Modals & Scripts -->
+    <!-- 🔥 PRODUCT MODAL 🔥 -->
     <div class="modal" id="productModal">
         <div class="modal-header">
             <h3>प्रॉडक्ट तपशील</h3>
@@ -308,73 +258,58 @@
         
         <div class="prod-detail-img" id="main_product_image" style="display:flex; align-items:center; justify-content:center; font-size:80px; background:linear-gradient(to bottom, #e8f5e9, #c8e6c9); transition: 0.3s;">🌾</div>
         
-        <div class="image-gallery-container" id="product_gallery_container">
-            <!-- Dynamically populated from script -->
-        </div>
+        <div class="image-gallery-container" id="product_gallery_container"></div>
         
         <div class="detail-body">
-            <div class="company-name" style="font-size:12px; margin-bottom:8px;"><span id="detail_company">गोदावरी फिड्स</span> <span style="color:#1976d2; background:#e3f2fd; padding:2px 4px; border-radius:4px; font-weight:bold;">✅ Verified Seller</span></div>
-            <h2 class="detail-title" id="detail_title">बायपास प्रोटीन मिल्क पेलेट (दुभत्या गाईंसाठी)</h2>
+            <div class="company-name" style="font-size:12px; margin-bottom:8px;"><span id="detail_company">दुग्ध दिशा प्रमाणित विक्रेता</span> <span style="color:#1976d2; background:#e3f2fd; padding:2px 4px; border-radius:4px; font-weight:bold;">✅ Verified Seller</span></div>
+            <h2 class="detail-title" id="detail_title">-</h2>
             <div class="rating-row" style="font-size:13px; margin-bottom:15px;"><span class="stars">★★★★★</span> ४.८ (३४५ Reviews) • 📍 तुमच्यापासून ४ किमी वर उपलब्ध</div>
             
             <div class="price-row" style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:15px;">
-                <span class="offer-price" style="font-size:24px;" id="detail_offer_price">₹१,३५०</span>
-                <span class="mrp-price" style="font-size:14px;" id="detail_mrp_price">₹१,५८०</span>
-                <span class="badge-discount" style="padding:4px 8px; font-size:12px; margin-left:10px;" id="detail_discount">१५% OFF</span>
+                <span class="offer-price" style="font-size:24px;" id="detail_offer_price">₹0</span>
+                <span class="mrp-price" style="font-size:14px;" id="detail_mrp_price">₹0</span>
+                <span class="badge-discount" style="padding:4px 8px; font-size:12px; margin-left:10px;" id="detail_discount">0% OFF</span>
             </div>
             
-            <!-- 🔥 NEW: WhatsApp Share Button 🔥 -->
             <button id="whatsapp_share_btn" onclick="shareProductWhatsApp()" style="background:#25D366; color:white; border:none; padding:10px 15px; border-radius:8px; font-weight:bold; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:8px; margin-bottom: 20px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);">
                 <span style="font-size:18px;">💬</span> WhatsApp वर प्रॉडक्ट शेअर करा
             </button>
             
-            <div class="info-section">
+            <div class="info-section" id="nutrition_section" style="display: none;">
                 <h4>📊 पोषण मूल्य (Nutrition Profile)</h4>
                 <div class="nutrition-grid">
-                    <div class="nutri-box"><div class="nutri-val">२२%</div><div class="nutri-lbl">Protein (CP)</div></div>
-                    <div class="nutri-box"><div class="nutri-val">८८%</div><div class="nutri-lbl">Dry Matter</div></div>
-                    <div class="nutri-box"><div class="nutri-val">२.२</div><div class="nutri-lbl">Energy (ME)</div></div>
-                    <div class="nutri-box"><div class="nutri-val">४%</div><div class="nutri-lbl">Fat</div></div>
+                    <div class="nutri-box"><div class="nutri-val" id="val_protein">-</div><div class="nutri-lbl">Protein (CP)</div></div>
+                    <div class="nutri-box"><div class="nutri-val" id="val_dm">-</div><div class="nutri-lbl">Dry Matter</div></div>
+                    <div class="nutri-box"><div class="nutri-val" id="val_energy">-</div><div class="nutri-lbl">Energy (ME)</div></div>
+                    <div class="nutri-box"><div class="nutri-val" id="val_fat">-</div><div class="nutri-lbl">Fat</div></div>
                 </div>
             </div>
 
             <div class="info-section">
                 <h4>📄 उत्पादन माहिती (Description)</h4>
-                <p>हे उच्च प्रतीचे प्रॉडक्ट विशेषतः गाई-म्हशींच्या उत्तम आरोग्यासाठी आणि दूध वाढीसाठी डिझाईन केले आहे. उत्पादनाचा दर्जा तपासलेला असून याचा वापर केल्याने जनावरांची वाढ उत्तम होते.</p>
+                <p id="dynamic_description_text" style="display: none;"></p>
                 <ul style="font-size:13px; color:#555; padding-left:20px; margin-top:10px;">
-                    <li><b>Suitable Animal:</b> गाय आणि म्हैस</li>
                     <li><b>Category:</b> <span id="detail_category">Feed</span></li>
                     <li><b>Status:</b> <span id="detail_stock" style="color:green; font-weight:bold;">In Stock</span></li>
                 </ul>
             </div>
             
-            <div class="info-section">
-                <h4>📞 विक्रेता सपोर्ट (Dealer Network)</h4>
-                <div style="background:#f4f7f9; padding:15px; border-radius:10px; display:flex; gap:10px; align-items:center;">
-                    <div style="font-size:30px;">🏪</div>
-                    <div style="flex:1;">
-                        <div style="font-weight:bold; font-size:14px; color:#333;" id="detail_dealer_name">अजिंक्य ट्रेडर्स</div>
-                        <div style="font-size:12px; color:#666;">Home Delivery Available • Bulk Order accepted.</div>
-                    </div>
-                    <button class="btn-icon" style="background:white; border:1px solid #ddd; border-radius:50%; width:40px; height:40px;">💬</button>
-                    <button class="btn-icon" style="background:white; border:1px solid #ddd; border-radius:50%; width:40px; height:40px; color:#2e7d32;">📞</button>
-                </div>
-            </div>
         </div>
 
         <div class="bottom-action-bar">
-            <button class="btn-quote">📝 Request Quote<br><span style="font-weight:normal; font-size:10px;">(Tender / Bulk)</span></button>
+            <!-- 🔥 FIX: Dynamic ID added for proper click binding 🔥 -->
+            <button class="btn-quote" id="detail_quote_btn">📝 Request Quote<br><span style="font-weight:normal; font-size:10px;">(Tender / Bulk)</span></button>
             <button class="btn-buy" id="detail_buy_btn">🛒 Buy Now</button>
         </div>
     </div>
 
+    <!-- 🔥 CART MODAL 🔥 -->
     <div class="modal" id="cartModal">
         <div class="modal-header">
             <h3>तुमची खरेदी (Cart) 🛒</h3>
             <div class="close-modal" onclick="closeCart()">✕</div>
         </div>
-        <div class="detail-body" id="cartItemsContainer" style="padding-bottom: 90px; padding-top: 10px;">
-        </div>
+        <div class="detail-body" id="cartItemsContainer" style="padding-bottom: 90px; padding-top: 10px;"></div>
         <div class="bottom-action-bar" style="justify-content: space-between; align-items: center; border-top: 1px solid #eee;">
             <div>
                 <div style="font-size: 12px; color: #666; font-weight: bold;">एकूण रक्कम:</div>
@@ -391,29 +326,17 @@
             <div class="close-modal" onclick="closeCheckout()">✕</div>
         </div>
         <div class="detail-body" style="padding-bottom: 20px;">
-            
             <h4 style="margin: 0 0 10px; font-size: 14px;">📍 डिलिव्हरीचा पत्ता (Shipping Address)</h4>
-            <div class="form-group">
-                <input type="text" id="chk_name" placeholder="पूर्ण नाव (उदा. रमेश पाटील)">
-            </div>
-            <div class="form-group">
-                <input type="number" id="chk_mobile" placeholder="मोबाईल नंबर (उदा. 9876543210)">
-            </div>
-            <div class="form-group">
-                <textarea id="chk_address" rows="3" placeholder="संपूर्ण पत्ता (घर क्र., रस्ता, गाव...)"></textarea>
-            </div>
+            <div class="form-group"><input type="text" id="chk_name" placeholder="पूर्ण नाव (उदा. रमेश पाटील)"></div>
+            <div class="form-group"><input type="number" id="chk_mobile" placeholder="मोबाईल नंबर (उदा. 9876543210)"></div>
+            <div class="form-group"><textarea id="chk_address" rows="3" placeholder="संपूर्ण पत्ता (घर क्र., रस्ता, गाव...)"></textarea></div>
             <div class="form-group" style="display:flex; gap:10px;">
-                <div style="flex:1;">
-                    <input type="number" id="chk_pincode" placeholder="पिनकोड (415001)" onblur="calculateFinalBill()">
-                </div>
-                <div style="flex:1;">
-                    <input type="text" id="chk_district" placeholder="जिल्हा (उदा. सातारा)">
-                </div>
+                <div style="flex:1;"><input type="number" id="chk_pincode" placeholder="पिनकोड (415001)" onblur="calculateFinalBill()"></div>
+                <div style="flex:1;"><input type="text" id="chk_district" placeholder="जिल्हा (उदा. सातारा)"></div>
             </div>
 
             <div style="background: white; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
                 <h4 style="margin: 0 0 10px; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 8px;">🧾 बिल तपशील (Order Summary)</h4>
-                
                 <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #555;">
                     <span>प्रॉडक्ट्सची किंमत:</span> <span id="chk_subtotal" style="font-weight:bold;">₹0</span>
                 </div>
@@ -422,7 +345,6 @@
                     <span id="chk_delivery" style="font-weight:bold; color:#2e7d32;">₹0</span>
                 </div>
             </div>
-
         </div>
         
         <div class="checkout-actions">
@@ -430,9 +352,7 @@
                 🏠 कॅश ऑन डिलिव्हरी (COD) <br>
                 <span style="font-size:12px; font-weight:normal;">एकूण भरा: <span id="btn_amt_cod" style="font-weight:bold; font-size:14px;">₹0</span></span>
             </button>
-            
             <div style="text-align:center; font-size:12px; color:#888; font-weight:bold; margin: 2px 0;">-- किंवा --</div>
-
             <button class="btn-action-large" style="background:linear-gradient(145deg, #2e7d32, #1b5e20); box-shadow: 0 4px 0 #0d3b11;" onclick="processPayment()">
                 ⚡ ऑनलाईन पेमेंट (Online UPI) <br>
                 <span style="font-size:12px; font-weight:normal;">एकूण भरा: <span id="btn_amt_online" style="font-weight:bold; font-size:14px;">₹0</span></span>
@@ -441,12 +361,10 @@
         </div>
     </div>
 
-    <!-- 🔥 FIX: CROP MODAL STYLES UPDATED FOR B2C CAMERA UPLOAD 🔥 -->
+    <!-- Crop Modal -->
     <div class="crop-modal-overlay" id="crop_modal">
         <div class="crop-modal-content">
-            <div class="crop-container">
-                <img id="crop_image_element" src="" alt="Image to crop">
-            </div>
+            <div class="crop-container"><img id="crop_image_element" src="" alt="Image to crop"></div>
             <div class="crop-controls">
                 <button class="crop-btn" onclick="cropper.rotate(-90)">↺ Rotate</button>
                 <button class="crop-btn" onclick="cropper.rotate(90)">↻ Rotate</button>
@@ -462,45 +380,28 @@
 
     <div id="toast">✅ कार्टमध्ये प्रॉडक्ट ॲड झाले!</div>
 
-    <!-- 🔥 BOTTOM NAVIGATION BAR 🔥 -->
+    <!-- Bottom Nav -->
     <div class="bottom-nav-bar">
-        <a href="index.html" class="b-nav-item">
-            <span class="b-nav-icon">🏠</span>
-            <span class="b-nav-text">होम</span>
-        </a>
-        <a href="kharedi_vikri.html" class="b-nav-item">
-            <span class="b-nav-icon">🐄</span>
-            <span class="b-nav-text">बाजार</span>
-        </a>
-        <a href="krushi_mall.html" class="b-nav-item active"> <!-- Active for Mall Page -->
-            <span class="b-nav-icon">🛒</span>
-            <span class="b-nav-text">मॉल</span>
-        </a>
-        <a href="ration_balancer.html" class="b-nav-item">
-            <span class="b-nav-icon">⚖️</span>
-            <span class="b-nav-text">आहार</span>
-        </a>
-        <a href="my_account.html" class="b-nav-item">
-            <span class="b-nav-icon">👤</span>
-            <span class="b-nav-text">खाते</span>
-        </a>
+        <a href="index.html" class="b-nav-item"><span class="b-nav-icon">🏠</span><span class="b-nav-text">होम</span></a>
+        <a href="kharedi_vikri.html" class="b-nav-item"><span class="b-nav-icon">🐄</span><span class="b-nav-text">बाजार</span></a>
+        <a href="krushi_mall.html" class="b-nav-item active"><span class="b-nav-icon">🛒</span><span class="b-nav-text">मॉल</span></a>
+        <a href="ration_balancer.html" class="b-nav-item"><span class="b-nav-icon">⚖️</span><span class="b-nav-text">आहार</span></a>
+        <a href="my_account.html" class="b-nav-item"><span class="b-nav-icon">👤</span><span class="b-nav-text">खाते</span></a>
     </div>
 
-    <!-- 🔥 Cropper.js Library 🔥 -->
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <script>
         window.currentBaseTotal = 0;
         window.currentOnlineTotal = 0;
         window.currentDeliveryFee = 0;
-        
         let cropper = null;
 
         function initializeStore() {
             if(typeof loadNotifications === 'function') loadNotifications('farmer');
             updateCartBadge();
             
-            // ADMIN SYNC: Sponsored Product & Header Banner Loading
             let liveAdsData = JSON.parse(localStorage.getItem('live_admin_ad_images'));
             let sponsorCard = document.getElementById('dynamic_mineral_card');
             let bannerBox = document.getElementById('dynamic_mall_banner');
@@ -515,12 +416,7 @@
                     if (bannerBox) {
                         let bgImg = ad.images && ad.images[0] ? `url(${ad.images[0]}) center/cover` : 'linear-gradient(145deg, #1565c0, #0d47a1)';
                         bannerBox.style.background = bgImg;
-                        bannerBox.innerHTML = `
-                            <span class="banner-tag">Sponsored</span>
-                            <div style="text-align:center; background:rgba(0,0,0,0.5); padding:10px; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer;" onclick="window.location.href='${ad.url || '#'}';">
-                                <span style="font-size:18px;">${ad.text || 'विशेष ऑफर'}</span>
-                            </div>
-                        `;
+                        bannerBox.innerHTML = `<span class="banner-tag">Sponsored</span><div style="text-align:center; background:rgba(0,0,0,0.5); padding:10px; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; cursor:pointer;" onclick="window.location.href='${ad.url || '#'}';"><span style="font-size:18px;">${ad.text || 'विशेष ऑफर'}</span></div>`;
                     }
                 }
                 
@@ -531,35 +427,22 @@
                          let adImgHtml = ad.images && ad.images[0] ? `<img src="${ad.images[0]}" style="width:100%; height:100%; object-fit:cover;">` : `🥣`;
                          sponsorCard.innerHTML = `
                             <div class="product-card" style="border: 2px solid #ff9800;">
-                                <div class="card-badges">
-                                    <span class="badge-sponsored">Sponsored</span>
-                                </div>
-                                <div class="card-img" style="background:#fff3e0; display:flex; align-items:center; justify-content:center; font-size:40px; overflow:hidden;" onclick="window.location.href='${ad.url || '#'}';">
-                                    ${adImgHtml}
-                                </div>
+                                <div class="card-badges"><span class="badge-sponsored">Sponsored</span></div>
+                                <div class="card-img" style="background:#fff3e0; display:flex; align-items:center; justify-content:center; font-size:40px; overflow:hidden;" onclick="window.location.href='${ad.url || '#'}';">${adImgHtml}</div>
                                 <div class="card-body">
                                     <div class="company-name">Premium Seller <span style="color:#1976d2; background:#e3f2fd; padding:2px 4px; border-radius:4px; font-size:9px;">✅ Verified Seller</span></div>
                                     <h4 class="prod-title" onclick="window.location.href='${ad.url || '#'}';">${ad.text || 'प्रीमियम उत्पादन'}</h4>
                                     <div class="rating-row" style="margin-top:10px;"><span class="stars">★★★★★</span> ४.८</div>
                                 </div>
-                            </div>
-                         `;
+                            </div>`;
                      }
                 }
             }
 
-            // Default banner if no admin ad is active
             if(!hasBannerAd && bannerBox) {
-                bannerBox.innerHTML = `
-                    <span class="banner-tag">Offer</span>
-                    <div style="text-align:center;">
-                        <span style="font-size:22px;">🔥 महा सेल</span><br>
-                        सर्व खतांवर २०% पर्यंत सूट!
-                    </div>
-                `;
+                bannerBox.innerHTML = `<span class="banner-tag">Offer</span><div style="text-align:center;"><span style="font-size:22px;">🔥 महा सेल</span><br>सर्व खतांवर २०% पर्यंत सूट!</div>`;
             }
 
-            // 🔥 LOAD VENDOR PRODUCTS 🔥
             loadDynamicProducts(hasSponsorAd);
         }
 
@@ -574,7 +457,7 @@
             }
             if(noProductMsg) noProductMsg.style.display = 'none';
 
-            let html = productGrid.innerHTML; // Keep sponsored card if it exists
+            let html = productGrid.innerHTML; 
 
             products.forEach(prod => {
                 let mainImgHtml = '';
@@ -593,7 +476,6 @@
                     discount = Math.round(((prod.mrp - prod.offerPrice) / prod.mrp) * 100);
                 }
 
-                // Pass the whole product object as a JSON string to the open product modal function
                 let prodJsonStr = encodeURIComponent(JSON.stringify(prod));
 
                 html += `
@@ -605,7 +487,7 @@
                         ${mainImgHtml}
                     </div>
                     <div class="card-body">
-                        <div class="company-name">${prod.vendorName}</div>
+                        <div class="company-name">दुग्ध दिशा प्रमाणित विक्रेता <span style="color:#1976d2; margin-left:4px;">✅</span></div>
                         <h4 class="prod-title" onclick="openDynamicProduct('${prodJsonStr}')">${prod.name}</h4>
                         <div class="prod-weight">${prod.category}</div>
                         
@@ -616,7 +498,7 @@
                         <div class="rating-row"><span class="stars">★★★★★</span> ४.५ (नवीन)</div>
                         
                         <div class="card-actions">
-                            <button class="btn-cart" onclick="addToCart('${prod.id}', '${prod.name}', ${prod.offerPrice}, '📦', '${prod.vendorName}', '${prod.category}')">🛒 Add to Cart</button>
+                            <button class="btn-cart" onclick="addToCart('${prod.id}', '${prod.name}', ${prod.offerPrice}, '📦', '${prod.vendorName}', '${prod.category}')">🛒 Add</button>
                             <button class="btn-icon">❤️</button>
                         </div>
                     </div>
@@ -630,8 +512,7 @@
             let prod = JSON.parse(decodeURIComponent(prodJsonStr));
             
             document.getElementById('detail_title').innerText = prod.name;
-            document.getElementById('detail_company').innerText = prod.vendorName;
-            document.getElementById('detail_dealer_name').innerText = prod.vendorName;
+            document.getElementById('detail_company').innerText = 'दुग्ध दिशा प्रमाणित विक्रेता';
             document.getElementById('detail_category').innerText = prod.category;
             
             let stockEl = document.getElementById('detail_stock');
@@ -655,7 +536,25 @@
                 document.getElementById('detail_discount').style.display = 'none';
             }
 
-            // Image Gallery Setup
+            let nutritionSection = document.getElementById('nutrition_section');
+            if (prod.protein || prod.dm || prod.energy || prod.fat) {
+                nutritionSection.style.display = 'block'; 
+                document.getElementById('val_protein').innerText = prod.protein ? prod.protein + "%" : "-";
+                document.getElementById('val_dm').innerText = prod.dm ? prod.dm + "%" : "-";
+                document.getElementById('val_energy').innerText = prod.energy ? prod.energy : "-";
+                document.getElementById('val_fat').innerText = prod.fat ? prod.fat + "%" : "-";
+            } else {
+                nutritionSection.style.display = 'none'; 
+            }
+
+            let descTextEl = document.getElementById('dynamic_description_text');
+            if (prod.description && prod.description.trim() !== "") {
+                descTextEl.style.display = 'block';
+                descTextEl.innerText = prod.description;
+            } else {
+                descTextEl.style.display = 'none';
+            }
+
             let galleryContainer = document.getElementById('product_gallery_container');
             let mainImageArea = document.getElementById('main_product_image');
             galleryContainer.innerHTML = '';
@@ -680,7 +579,6 @@
                 mainImageArea.style.background = 'linear-gradient(to bottom, #e3f2fd, #bbdefb)';
             }
 
-            // Buy Button Update
             let buyBtn = document.getElementById('detail_buy_btn');
             buyBtn.innerText = `🛒 Buy Now (₹${prod.offerPrice})`;
             buyBtn.onclick = function() {
@@ -689,17 +587,14 @@
                 openCart();
             };
 
+            // 🔥 FIX: Request Quote Button Dynamically mapped with Supplier Info 🔥
+            let quoteBtn = document.getElementById('detail_quote_btn');
+            quoteBtn.onclick = function() {
+                requestQuote(prod.name, prod.vendorName);
+            };
+
             document.getElementById('productModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
-        }
-
-        // Keep this for hardcoded dummy products if any remain
-        function changeMainImage(thumbElement, icon, bgGradient) {
-            document.querySelectorAll('.gallery-thumb').forEach(el => el.classList.remove('active'));
-            thumbElement.classList.add('active');
-            let mainImg = document.getElementById('main_product_image');
-            mainImg.innerHTML = icon;
-            mainImg.style.background = bgGradient;
         }
 
         function closeProduct() {
@@ -707,7 +602,6 @@
             document.body.style.overflow = 'auto'; 
         }
 
-        // --- 🔥 NEW: IMAGE CROP LOGIC FOR USERS (CAMERA) 🔥 ---
         function openCropModal(event) {
             let file = event.target.files[0];
             if(!file) return;
@@ -715,22 +609,13 @@
             let reader = new FileReader();
             reader.onload = function(e) {
                 let imageElement = document.getElementById('crop_image_element');
-                
                 document.getElementById('crop_modal').style.display = 'flex';
-                
                 imageElement.onload = function() {
                     if(cropper) { cropper.destroy(); }
-                    
                     cropper = new Cropper(imageElement, {
-                        aspectRatio: 1, 
-                        viewMode: 2, 
-                        autoCropArea: 0.8,
-                        background: true,
-                        responsive: true,
-                        checkOrientation: false
+                        aspectRatio: 1, viewMode: 2, autoCropArea: 0.8, background: true, responsive: true, checkOrientation: false
                     });
                 };
-                
                 imageElement.src = e.target.result;
             }
             reader.readAsDataURL(file);
@@ -744,13 +629,7 @@
 
         function saveCroppedImage() {
             if(!cropper) return;
-            
-            let canvas = cropper.getCroppedCanvas({
-                width: 600,
-                height: 600,
-                imageSmoothingQuality: 'high'
-            });
-            
+            let canvas = cropper.getCroppedCanvas({ width: 600, height: 600, imageSmoothingQuality: 'high' });
             let finalImageSrc = canvas.toDataURL('image/jpeg', 0.8);
             alert("✅ तुमचा फोटो यशस्वीरीत्या क्रॉप आणि सेट झाला आहे!");
             closeCropModal();
@@ -760,11 +639,9 @@
             let cart = JSON.parse(localStorage.getItem('krushi_cart')) || [];
             let existingItem = cart.find(i => i.id === id);
             
-            if(existingItem) {
-                existingItem.qty += 1;
-            } else {
-                cart.push({id, name, price, icon, company, category, qty: 1});
-            }
+            if(existingItem) { existingItem.qty += 1; } 
+            else { cart.push({id, name, price, icon, company, category, qty: 1}); }
+            
             localStorage.setItem('krushi_cart', JSON.stringify(cart));
             updateCartBadge();
             showToast('✅ ' + name + ' कार्टमध्ये ॲड केले!');
@@ -773,12 +650,9 @@
         function updateQty(id, change) {
             let cart = JSON.parse(localStorage.getItem('krushi_cart')) || [];
             let itemIndex = cart.findIndex(i => i.id === id);
-            
             if(itemIndex > -1) {
                 cart[itemIndex].qty += change;
-                if(cart[itemIndex].qty <= 0) {
-                    cart.splice(itemIndex, 1);
-                }
+                if(cart[itemIndex].qty <= 0) { cart.splice(itemIndex, 1); }
                 localStorage.setItem('krushi_cart', JSON.stringify(cart));
                 updateCartBadge();
                 renderCartItems(); 
@@ -824,15 +698,13 @@
                 <div style="display:flex; align-items:center; gap:12px; background:white; padding:12px; border-radius:12px; margin-bottom:12px; border:1px solid #e0e0e0; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
                     <div style="width:55px; height:55px; background:#f4f7f9; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:28px; border:1px solid #eee;">${item.icon}</div>
                     <div style="flex:1;">
-                        <div style="font-size:10px; color:#1976d2; font-weight:bold; margin-bottom:2px;">${item.company}</div>
+                        <div style="font-size:10px; color:#1976d2; font-weight:bold; margin-bottom:2px;">दुग्ध दिशा प्रमाणित विक्रेता</div>
                         <div style="font-size:13px; font-weight:900; color:#333; line-height:1.2; margin-bottom:6px;">${item.name}</div>
-                        
                         <div style="display:flex; align-items:center; gap:8px;">
                             <button class="qty-btn" onclick="updateQty('${item.id}', -1)">-</button>
                             <span style="font-size:13px; font-weight:bold;">${item.qty}</span>
                             <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
                         </div>
-
                     </div>
                     <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
                         <button onclick="removeFromCart('${item.id}')" style="background:transparent; color:#c62828; border:none; padding:4px 0; font-size:14px; cursor:pointer;">🗑️</button>
@@ -855,9 +727,7 @@
 
         function openCheckout() {
             let cart = JSON.parse(localStorage.getItem('krushi_cart')) || [];
-            if(cart.length === 0) { 
-                alert('कार्ट रिकामी आहे! आधी प्रॉडक्ट निवडा.'); return; 
-            }
+            if(cart.length === 0) { alert('कार्ट रिकामी आहे! आधी प्रॉडक्ट निवडा.'); return; }
             
             let userName = localStorage.getItem("current_user_name");
             let userMobile = localStorage.getItem("current_user_mobile");
@@ -866,7 +736,6 @@
 
             document.getElementById('checkoutModal').style.display = 'block';
             document.getElementById('cartModal').style.display = 'none'; 
-            
             calculateFinalBill();
         }
 
@@ -877,19 +746,15 @@
             let userPincode = document.getElementById('chk_pincode').value;
             let deliveryFee = 0;
             let courierName = "";
-
             let adminRates = JSON.parse(localStorage.getItem('admin_delivery_rates')) || {};
 
             if(userPincode && adminRates[userPincode]) {
                 deliveryFee = adminRates[userPincode].charge;
                 courierName = "(" + adminRates[userPincode].courier + ")";
-            } else {
-                deliveryFee = subtotal >= 1000 ? 0 : 50;
-            }
+            } else { deliveryFee = subtotal >= 1000 ? 0 : 50; }
 
             let adminSettings = JSON.parse(localStorage.getItem('admin_data_M33')) || {};
             let onlineDiscountPercent = parseFloat(adminSettings.m33_online_benefit) || 1;
-            
             let benefitAmount = subtotal * (onlineDiscountPercent / 100);
             
             window.currentBaseTotal = subtotal + deliveryFee;
@@ -899,7 +764,6 @@
             document.getElementById('chk_subtotal').innerText = '₹' + subtotal.toLocaleString('en-IN');
             document.getElementById('chk_delivery').innerText = deliveryFee === 0 ? 'मोफत (Free)' : '₹' + deliveryFee;
             document.getElementById('delivery_courier_name').innerText = courierName;
-            
             document.getElementById('btn_amt_cod').innerText = '₹' + window.currentBaseTotal.toLocaleString('en-IN');
             document.getElementById('btn_amt_online').innerText = '₹' + window.currentOnlineTotal.toLocaleString('en-IN');
             
@@ -907,9 +771,7 @@
             if(benefitAmount > 0) {
                 saveTextEl.innerText = `तुमची बचत: ₹${Math.round(benefitAmount)}`;
                 saveTextEl.style.display = 'inline-block';
-            } else {
-                saveTextEl.style.display = 'none';
-            }
+            } else { saveTextEl.style.display = 'none'; }
         }
 
         function closeCheckout() {
@@ -923,8 +785,7 @@
             let add = document.getElementById('chk_address').value;
             let pin = document.getElementById('chk_pincode').value;
             if(!name || !mob || !add || !pin) {
-                alert("कृपया ऑर्डर कन्फर्म करण्यापूर्वी डिलिव्हरीचा संपूर्ण पत्ता आणि माहिती भरा!");
-                return false;
+                alert("कृपया ऑर्डर कन्फर्म करण्यापूर्वी डिलिव्हरीचा संपूर्ण पत्ता आणि माहिती भरा!"); return false;
             }
             return name;
         }
@@ -944,39 +805,25 @@
             let dateStr = today.toLocaleDateString('mr-IN', { day: 'numeric', month: 'short', year: 'numeric' }) + " • " + today.toLocaleTimeString('en-US', { hour: '2-digit', minute:'2-digit' });
 
             let newOrder = {
-                id: orderId,
-                date: dateStr,
-                customer: { name, mobile, address, pincode, district },
-                items: cart,
-                totalAmount: finalAmount,
-                paymentMethod: paymentType,
-                status: "pending",
-                commissionPaid: false // Set commission flag
+                id: orderId, date: dateStr, customer: { name, mobile, address, pincode, district },
+                items: cart, totalAmount: finalAmount, paymentMethod: paymentType, status: "pending", commissionPaid: false
             };
 
             let allOrders = JSON.parse(localStorage.getItem('user_orders')) || [];
             allOrders.unshift(newOrder); 
             localStorage.setItem('user_orders', JSON.stringify(allOrders));
 
-            // --- 🔥 NEW: Vendor Specific Notification Logic (फक्त याच भागामध्ये बदल केला आहे) 🔥 ---
             let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-            
-            // कार्ट मधील प्रत्येक वेगळ्या डीलरला/कंपनीला शोधून नोटिफिकेशन पाठवा
             let uniqueVendors = [...new Set(cart.map(item => item.company))];
             
             uniqueVendors.forEach(vendorName => {
                 appNotifs.push({
-                    receiver_mobile: vendorName, // इथे विक्रेता ओळखण्यासाठी त्याचे नाव (vendorName) वापरले आहे. तुमच्या डॅशबोर्ड कोडमध्ये 'company name' किंवा मोबाईल नंबरने फिल्टर करा.
-                    title: "📦 नवीन ऑर्डर प्राप्त!",
+                    receiver_mobile: vendorName, title: "📦 नवीन ऑर्डर प्राप्त!",
                     message: `तुम्हाला कृषी मॉलवरून श्री. ${name} यांची नवीन ऑर्डर आली आहे.`,
-                    date: new Date().toLocaleDateString('mr-IN'),
-                    orderId: orderId,
-                    isRead: false
+                    date: new Date().toLocaleDateString('mr-IN'), orderId: orderId, isRead: false
                 });
             });
-            
             localStorage.setItem('app_notifications', JSON.stringify(appNotifs));
-            // ---------------------------------------------------------------------
         }
 
         function processCOD() {
@@ -989,7 +836,7 @@
                 updateCartBadge();
                 closeCheckout();
                 alert("🎉 तुमची COD ऑर्डर यशस्वीरीत्या नोंदवली गेली आहे!\n\nमाल तुमच्या पत्त्यावर पोहोचल्यावर ₹" + window.currentBaseTotal + " रोख द्यावे लागतील.");
-                window.location.href = "my_orders.html"; // Redirect if page exists
+                window.location.href = "my_orders.html";
             }
         }
 
@@ -1000,7 +847,6 @@
             let paymentSettings = JSON.parse(localStorage.getItem("admin_payment_settings")) || { payee_name: "दुग्ध दिशा AI", upi_id: "9579535290@kotak" };
             let merchantUPI = paymentSettings.upi_id;
             let payeeName = encodeURIComponent(paymentSettings.payee_name); 
-            
             let upiLink = `upi://pay?pa=${merchantUPI}&pn=${payeeName}&am=${window.currentOnlineTotal}&cu=INR`;
             
             if(confirm(`श्री. ${customerName},\nतुमचे एकूण बिल ₹${window.currentOnlineTotal} आहे. (तुम्ही बचत केली!)\n\nपेमेंट करण्यासाठी तुमच्या मोबाईलवरील (PhonePe/Google Pay) उघडायचे का?`)) {
@@ -1008,19 +854,16 @@
                 setTimeout(() => {
                     if(confirm("पेमेंट यशस्वी झाले का? (डेमो मोड)")) {
                         saveOrderToHistory('Online Paid', window.currentOnlineTotal); 
-                        
-                        // Because it's online, set commissionPaid to true in the latest order
                         let allOrders = JSON.parse(localStorage.getItem('user_orders')) || [];
                         if(allOrders.length > 0) {
                             allOrders[0].commissionPaid = true;
                             localStorage.setItem('user_orders', JSON.stringify(allOrders));
                         }
-
                         localStorage.removeItem('krushi_cart');
                         updateCartBadge();
                         closeCheckout();
                         alert("🎉 पेमेंट यशस्वी! तुमची ऑर्डर नोंदवली गेली आहे. लवकरच माल तुमच्या पत्त्यावर पोहोचेल.");
-                        window.location.href = "my_orders.html"; // Redirect if page exists
+                        window.location.href = "my_orders.html";
                     }
                 }, 3000);
             }
@@ -1033,19 +876,61 @@
             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
 
-        // 🔥 NEW: WhatsApp Share Function 🔥
         function shareProductWhatsApp() {
             let title = document.getElementById('detail_title').innerText;
             let price = document.getElementById('detail_offer_price').innerText;
-            let company = document.getElementById('detail_company').innerText;
             
             let appLink = "https://play.google.com/store/apps/details?id=com.dugdhadisha.app"; 
             let productLink = "https://dugdhadisha.com/krushi_mall.html"; 
             
-            let message = `*${title}*\n🏢 कंपनी: ${company}\n💰 किंमत: ${price}\n\nहे उत्कृष्ट प्रॉडक्ट 'दुग्ध दिशा कृषी मॉल' वर उपलब्ध आहे. खरेदीसाठी खालील लिंकवर क्लिक करा:\n\n🛒 प्रॉडक्ट लिंक: ${productLink}\n📱 दुग्ध दिशा ॲप लिंक: ${appLink}`;
+            let message = `*${title}*\n💰 किंमत: ${price}\n\nहे उत्कृष्ट प्रॉडक्ट 'दुग्ध दिशा कृषी मॉल' वर उपलब्ध आहे. खरेदीसाठी खालील लिंकवर क्लिक करा:\n\n🛒 प्रॉडक्ट लिंक: ${productLink}\n📱 दुग्ध दिशा ॲप लिंक: ${appLink}`;
             
             let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
+        }
+
+        // 🔥 NEW & UPDATED: Request Quote Function (Admin + Supplier Notification) 🔥
+        function requestQuote(prodName, vendorName) {
+            let qty = prompt(prodName + "\n\nतुम्हाला किती किलो/नग (Quantity) हवे आहेत? (उदा. 500 kg, 100 bags):");
+            
+            if(qty) {
+                // १. ग्राहकाची माहिती मिळवणे
+                let userName = localStorage.getItem("current_user_name") || "शेतकरी/ग्राहक";
+                let userMobile = localStorage.getItem("current_user_mobile") || "माहिती नाही";
+
+                // २. ॲडमिनला नोटिफिकेशन पाठवणे (Admin Panel)
+                let adminNotifs = JSON.parse(localStorage.getItem("admin_notifications")) || [];
+                adminNotifs.unshift({
+                    title: "📝 नवीन कोटेशन रिक्वेस्ट (Bulk Order)",
+                    message: `${userName} (${userMobile}) यांना '${prodName}' ची ${qty} प्रमाणात आवश्यकता आहे. सप्लायरला (Vendor: ${vendorName}) संपर्क करा.`,
+                    date: new Date().toLocaleDateString('mr-IN')
+                });
+                localStorage.setItem("admin_notifications", JSON.stringify(adminNotifs));
+
+                // ३. सप्लायरला (Vendor) नोटिफिकेशन पाठवणे (App Notification)
+                if (vendorName) {
+                    let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+                    appNotifs.push({
+                        receiver_mobile: vendorName, // Vendor's ID/Mobile
+                        title: "📝 नवीन कोटेशन रिक्वेस्ट (Bulk Order)!",
+                        message: `श्री. ${userName} यांना तुमच्या '${prodName}' ची ${qty} प्रमाणात आवश्यकता आहे. कृपया कोटेशन तयार करा.`,
+                        date: new Date().toLocaleDateString('mr-IN'),
+                        orderId: "#REQ-" + Math.floor(1000 + Math.random() * 9000),
+                        isRead: false
+                    });
+                    localStorage.setItem('app_notifications', JSON.stringify(appNotifs));
+                }
+
+                // ४. ग्राहकाला स्क्रीनवर अलर्ट दाखवणे
+                alert("✅ तुमची रिक्वेस्ट ॲडमिन आणि सप्लायर दोघांनाही पाठवली आहे! लवकरच तुम्हाला संपर्क केला जाईल.");
+                
+                closeProduct();
+
+                // ५. (पर्यायी) WhatsApp वरून ॲडमिनला मेसेज पाठवणे
+                let message = `*Bulk Order Request (Tender)*\n\n👤 नाव: ${userName}\n📞 मोबाईल: ${userMobile}\n📦 प्रॉडक्ट: ${prodName}\n⚖️ अपेक्षित प्रमाण: ${qty}\n\nमला या प्रॉडक्टसाठी होलसेल रेट (Quote) हवा आहे.`;
+                let whatsappUrl = `https://wa.me/919579535290?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }
         }
     </script>
 </body>

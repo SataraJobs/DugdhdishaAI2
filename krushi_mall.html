@@ -957,6 +957,26 @@
             let allOrders = JSON.parse(localStorage.getItem('user_orders')) || [];
             allOrders.unshift(newOrder); 
             localStorage.setItem('user_orders', JSON.stringify(allOrders));
+
+            // --- 🔥 NEW: Vendor Specific Notification Logic (फक्त याच भागामध्ये बदल केला आहे) 🔥 ---
+            let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+            
+            // कार्ट मधील प्रत्येक वेगळ्या डीलरला/कंपनीला शोधून नोटिफिकेशन पाठवा
+            let uniqueVendors = [...new Set(cart.map(item => item.company))];
+            
+            uniqueVendors.forEach(vendorName => {
+                appNotifs.push({
+                    receiver_mobile: vendorName, // इथे विक्रेता ओळखण्यासाठी त्याचे नाव (vendorName) वापरले आहे. तुमच्या डॅशबोर्ड कोडमध्ये 'company name' किंवा मोबाईल नंबरने फिल्टर करा.
+                    title: "📦 नवीन ऑर्डर प्राप्त!",
+                    message: `तुम्हाला कृषी मॉलवरून श्री. ${name} यांची नवीन ऑर्डर आली आहे.`,
+                    date: new Date().toLocaleDateString('mr-IN'),
+                    orderId: orderId,
+                    isRead: false
+                });
+            });
+            
+            localStorage.setItem('app_notifications', JSON.stringify(appNotifs));
+            // ---------------------------------------------------------------------
         }
 
         function processCOD() {

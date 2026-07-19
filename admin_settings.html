@@ -88,6 +88,58 @@
         .crop-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;}
         .crop-btn { background: #1976d2; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;}
         .crop-btn.save { background: #2e7d32; font-size: 16px; padding: 12px 25px;}
+        
+        /* 🔥 NEW: VIEW DOCUMENT MODAL STYLES 🔥 */
+        .doc-modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .doc-modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .doc-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .doc-close-btn:hover {
+            color: #d32f2f;
+        }
+
+        .document-preview-img {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #eee;
+            background: #f9f9f9;
+        }
 
         /* Mobile Responsive Magic */
         @media (max-width: 768px) {
@@ -872,6 +924,21 @@
         </div>
     </div>
 
+    <!-- 🔥 NEW: DOCUMENT VIEWER MODAL 🔥 -->
+    <div id="documentViewModal" class="doc-modal-overlay">
+        <div class="doc-modal-content">
+            <button class="doc-close-btn" onclick="closeDocumentModal()">✕</button>
+            <h3 id="doc_modal_title" style="margin: 0 0 10px 0; color: #333; font-size: 18px;">डॉक्युमेंट पहा</h3>
+            <img id="doc_modal_image" src="" alt="Document Preview" class="document-preview-img">
+            
+            <div style="margin-top: 15px;">
+                <button id="doc_download_btn" style="background: #1b5e20; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%;">
+                    🔗 पूर्ण साईझमध्ये पहा (Open in New Tab)
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 🔥 Cropper.js Script 🔥 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
@@ -1095,7 +1162,7 @@
                 if(adPending.length > 0) html += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('m31'); toggleAdminNotifications();">🔥 <b style="color:#d32f2f;">${adPending.length}</b> जाहिराती मंजुरीसाठी पेंडिंग</div>`;
                 if(commPending.length > 0) html += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('m35'); toggleAdminNotifications();">💰 <b style="color:#d32f2f;">${commPending.length}</b> कमिशन पेमेंट्स मंजुरीसाठी पेंडिंग</div>`;
                 if(doctorPendingCount > 0) html += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('m_doctor_approve'); toggleAdminNotifications();">📞 <b style="color:#d32f2f;">1</b> डॉक्टर नंबर मंजुरीसाठी पेंडिंग</div>`;
-                if(openTicketsCount > 0) html += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('m36'); toggleAdminNotifications();">📩 <b style="color:#d32f2f;">${openTicketsCount}</b> नवीन कस्टमर सपोर्ट मेसेजेस</div>`;
+                if(openTicketsCount > 0) html += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('m36'); toggleAdminNotifications();">📩 <b style="color:#d32f2f;">${openTicketsCount}</b> नवीन कस्टम सपोर्ट मेसेजेस</div>`;
                 
                 listContainer.innerHTML = html;
             } else {
@@ -1206,7 +1273,6 @@
                     'm25_f_gold', 'm25_f_plat1', 'm25_f_plat6', 'm25_t_ration', 'm25_t_disease', 'm25_t_calf', 
                     'm25_t_repro', 'm25_t_milk', 'm25_t_vaccine', 'm25_t_poison', 'm25_t_weather', 'm25_t_bcs'],
             'M26': ['m26_gw', 'm26_key', 'm26_gst', 'm26_addr', 'upi_payee_name', 'upi_id_value']
-            // Removed M33 from here to prevent overwrite of the new complex JSON logic
         };
 
         function saveModule(mod) {
@@ -1268,8 +1334,8 @@
         // --- 🚀 3. ON PAGE LOAD INIT ---
         function initAdminPanel() {
             loadAllModules();
-            loadPlatformFeeConfig(); // Load specific dynamic config
-            loadDashboardStats(); // 🔥 LIVE DATA LOADING IS TRIGGERED HERE
+            loadPlatformFeeConfig(); 
+            loadDashboardStats(); 
             loadDeliveryRates();
             loadSavedAds(); 
             loadPendingAds(); 
@@ -1281,12 +1347,33 @@
             loadCustomerSupportTickets(); 
         }
 
+        // --- 🔥 NEW: VIEW DOCUMENT MODAL FUNCTIONS 🔥 ---
+        function openDocumentModal(imageUrl, documentName) {
+            if(!imageUrl || imageUrl === "") {
+                alert("या फॉर्मसोबत " + documentName + " अपलोड केलेले नाही.");
+                return;
+            }
+
+            document.getElementById('doc_modal_title').innerText = documentName;
+            document.getElementById('doc_modal_image').src = imageUrl;
+            
+            document.getElementById('doc_download_btn').onclick = function() {
+                window.open(imageUrl, '_blank');
+            };
+
+            document.getElementById('documentViewModal').style.display = 'flex';
+        }
+
+        function closeDocumentModal() {
+            document.getElementById('documentViewModal').style.display = 'none';
+            document.getElementById('doc_modal_image').src = ""; 
+        }
+
         // --- 🔥 NEW: M36 CUSTOMER SUPPORT TICKETS LOGIC 🔥 ---
         function loadCustomerSupportTickets() {
             let tickets = JSON.parse(localStorage.getItem('admin_support_tickets')) || [];
             let container = document.getElementById('support_tickets_container');
             
-            // Only show Open tickets (or those that need reply)
             let openTickets = tickets.filter(t => t.status === "Open");
 
             if(openTickets.length === 0) {
@@ -1329,36 +1416,30 @@
             
             if(tIndex > -1) {
                 tickets[tIndex].reply = replyText;
-                tickets[tIndex].status = "Closed"; // Mark as resolved
+                tickets[tIndex].status = "Closed"; 
                 localStorage.setItem('admin_support_tickets', JSON.stringify(tickets));
                 
                 alert("✅ तुमचा रिप्लाय व्यापाऱ्याला/शेतकऱ्याला पाठवला गेला आहे.");
                 loadCustomerSupportTickets();
-                loadAdminNotifications(); // Update Bell icon
+                loadAdminNotifications(); 
             }
         }
 
-
-        // --- 📊 M1: DASHBOARD STATS LOGIC (UPDATED WITH REAL-TIME CALCULATION) ---
+        // --- 📊 M1: DASHBOARD STATS LOGIC ---
         function loadDashboardStats() {
-            // 1. Fetch Real Users
             let users = JSON.parse(localStorage.getItem('app_users')) || [];
-            document.getElementById('stat_users').innerText = users.length; // No dummy data
+            document.getElementById('stat_users').innerText = users.length; 
 
-            // 2. Fetch Real Orders
             let orders = JSON.parse(localStorage.getItem('user_orders')) || [];
-            document.getElementById('stat_orders_count').innerText = orders.length; // No dummy data
+            document.getElementById('stat_orders_count').innerText = orders.length; 
 
-            // 3. Calculate Real Revenue
             let totalRev = orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
             document.getElementById('stat_revenue').innerText = "₹" + totalRev.toLocaleString('en-IN');
 
-            // 4. Fetch Real Active Ads
             let savedAds = JSON.parse(localStorage.getItem('live_admin_ad_images'));
             let activeAdsCount = (savedAds && savedAds.ads && savedAds.ads.length > 0) ? savedAds.ads.length : 0;
             document.getElementById('stat_ads').innerText = activeAdsCount;
 
-            // 5. Display Recent Live Orders
             let orderListHTML = '';
             if(orders.length === 0) {
                 orderListHTML = '<div style="padding:15px; text-align:center; color:#888;">अद्याप कोणतीही नवीन ऑर्डर आलेली नाही.</div>';
@@ -1574,7 +1655,7 @@
 
             alert("🎉 प्लॅन यशस्वीरीत्या सुरू झाला आहे!");
             loadFarmerPayments();
-            loadAdminNotifications(); // Update Bell Icon
+            loadAdminNotifications(); 
         }
 
         function rejectFarmerPlan(index) {
@@ -1585,7 +1666,7 @@
             localStorage.removeItem('farmer_pending_plan');
             alert("❌ पेमेंट नाकारले.");
             loadFarmerPayments();
-            loadAdminNotifications(); // Update Bell Icon
+            loadAdminNotifications(); 
         }
 
         // --- 🔥 NEW: DOCTOR CALL NUMBER APPROVALS 🔥 ---
@@ -1687,7 +1768,7 @@
             }
         }
 
-        // --- 🔥 M32: VENDOR KYC APPROVAL LOGIC ---
+        // --- 🔥 M32: VENDOR KYC APPROVAL LOGIC (UPDATED WITH VIEW DOCUMENTS) 🔥 ---
         function loadPendingKyc() {
             let pendingKycList = JSON.parse(localStorage.getItem('admin_pending_kyc')) || [];
             let container = document.getElementById('pending_kyc_container');
@@ -1699,6 +1780,12 @@
 
             let html = '';
             pendingKycList.forEach((kyc, index) => {
+                
+                // इथे सध्या आपण डेमो इमेजेस (dummy images) लिंक करत आहोत. 
+                // भविष्यात क्लाउडिनरी कनेक्ट झाल्यावर तुम्ही kyc.panUrl आणि kyc.shopActUrl असे वापरू शकता.
+                let panImageLink = kyc.panUrl || 'https://www.w3schools.com/html/pic_trulli.jpg'; 
+                let shopImageLink = kyc.shopActUrl || 'https://www.w3schools.com/html/img_girl.jpg';
+                
                 html += `
                 <div class="approval-card" style="border-color:#81d4fa; background:#e1f5fe;">
                     <div class="approval-header" style="border-color:#29b6f6;">
@@ -1708,7 +1795,18 @@
                     <div style="font-size:13px; line-height:1.6; margin-bottom:10px;">
                         <b>Mobile:</b> ${kyc.mobile} <br>
                         <b>GST No:</b> <span style="background:#fff; padding:2px 5px; border:1px solid #ccc; font-weight:bold;">${kyc.gst || 'Not Provided'}</span> <br>
-                        <b>Documents:</b> <span style="color:#2e7d32;">आधार आणि दुकानाचा पुरावा अपलोड केला आहे.</span>
+                        
+                        <!-- 🔥 NEW: View Document Buttons 🔥 -->
+                        <div style="display: flex; gap: 10px; margin-top: 10px; margin-bottom: 5px;">
+                            <button onclick="openDocumentModal('${panImageLink}', 'पॅन कार्ड - ${kyc.vendorName}')" 
+                                    style="background: #fff; color: #0288d1; border: 1px solid #0288d1; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                👁️ पॅन कार्ड पहा
+                            </button>
+                            <button onclick="openDocumentModal('${shopImageLink}', 'शॉप ॲक्ट - ${kyc.vendorName}')" 
+                                    style="background: #fff; color: #0288d1; border: 1px solid #0288d1; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                👁️ शॉप ॲक्ट पहा
+                            </button>
+                        </div>
                     </div>
                     <div class="approval-actions">
                         <button class="btn-prime" style="background:#0288d1; flex:1;" onclick="approveKyc('${kyc.mobile}', ${index})">✅ Approve Seller</button>
@@ -1725,7 +1823,7 @@
                 let userIndex = users.findIndex(u => u.mobile === mobile);
                 if(userIndex > -1) {
                     users[userIndex].isVerified = true;
-                    users[userIndex].role = 'dealer'; // 🔥 हा अत्यंत महत्त्वाचा बदल!
+                    users[userIndex].role = 'dealer'; 
                     users[userIndex].kyc_status = 'approved';
                     localStorage.setItem('app_users', JSON.stringify(users));
                 }
@@ -1736,7 +1834,7 @@
 
                 alert("🎉 विक्रेता यशस्वीरीत्या 'Approve' झाला आहे. आता तो प्रॉडक्ट आणि जाहिरात लावू शकतो.");
                 loadPendingKyc(); 
-                loadAdminNotifications(); // Update Bell Icon
+                loadAdminNotifications(); 
             }
         }
 
@@ -1747,7 +1845,7 @@
                 localStorage.setItem('admin_pending_kyc', JSON.stringify(pendingKycList));
                 alert("❌ विक्रेत्याचा अर्ज नाकारला.");
                 loadPendingKyc(); 
-                loadAdminNotifications(); // Update Bell Icon
+                loadAdminNotifications(); 
             }
         }
 
@@ -1881,7 +1979,7 @@
                 
                 alert(`✅ जाहिरात ${adId} मंजूर करण्यात आली आहे! (सध्या हे डेमोमध्ये सेव्ह झाले आहे. भविष्यात हे 'live_admin_ad_images' मध्ये आपोआप जाईल.)`);
                 loadPendingAds(); 
-                loadAdminNotifications(); // Update Bell Icon
+                loadAdminNotifications(); 
             }
         }
 
@@ -1892,7 +1990,7 @@
                 localStorage.setItem('admin_pending_ad_approvals', JSON.stringify(pendingAds));
                 alert("❌ जाहिरात रद्द केली.");
                 loadPendingAds(); 
-                loadAdminNotifications(); // Update Bell Icon
+                loadAdminNotifications(); 
             }
         }
 

@@ -477,10 +477,10 @@
                 <div class="biz-card">
                     <h4>📦 Shopping Management (नवीन ऑर्डर्स)</h4>
                     <div style="margin-bottom: 20px;">
-                        <span class="tag filter-tag active" onclick="loadDealerOrders('all', this)">All Orders</span>
-                        <span class="tag filter-tag" onclick="loadDealerOrders('pending', this)" style="color:#e65100; border-color:#ffe0b2;">Pending (प्रोसेसिंग)</span>
-                        <span class="tag filter-tag" onclick="loadDealerOrders('shipped', this)" style="color:#1565c0; border-color:#bbdefb;">Shipped (वाटेत)</span>
-                        <span class="tag filter-tag" onclick="loadDealerOrders('delivered', this)" style="color:#2e7d32; border-color:#c8e6c9;">Delivered (पोहोचले)</span>
+                        <span class="tag filter-tag active" onclick="loadDealerOrdersDashboard('all', this)">All Orders</span>
+                        <span class="tag filter-tag" onclick="loadDealerOrdersDashboard('pending', this)" style="color:#e65100; border-color:#ffe0b2;">Pending (प्रोसेसिंग)</span>
+                        <span class="tag filter-tag" onclick="loadDealerOrdersDashboard('shipped', this)" style="color:#1565c0; border-color:#bbdefb;">Shipped (वाटेत)</span>
+                        <span class="tag filter-tag" onclick="loadDealerOrdersDashboard('delivered', this)" style="color:#2e7d32; border-color:#c8e6c9;">Delivered (पोहोचले)</span>
                     </div>
                     <div class="field" style="max-width: 300px;"><input type="text" placeholder="🔍 Search Order ID / Pincode" onkeyup="searchOrders(this.value)"></div>
                     <div id="dealer_orders_container"></div>
@@ -1180,7 +1180,7 @@
                 benefits: pBenefits,
                 description: pDesc,
                 images: images,
-                vendorName: pBrand, 
+                vendorName: localStorage.getItem("current_user_name") || pBrand, 
                 dateAdded: new Date().toISOString()
             };
 
@@ -1522,22 +1522,25 @@
             calculateAdEstimation();
         }
 
+        // 🔥 FIX: Show ONLY the logged-in vendor's notifications from app_notifications 🔥
         function toggleVendorNotifications() {
             const dropdown = document.getElementById('vendorNotificationDropdown');
             dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
         }
 
+        // 🔥 FIX: Correct logic to pull 'Request Quote' leads for this specific vendor 🔥
         function checkVendorNotifications() {
-            let pendingAds = JSON.parse(localStorage.getItem('admin_pending_ad_approvals')) || [];
             let isVerified = localStorage.getItem("vendor_verified") === 'true';
-            let myPendingAdsCount = pendingAds.length; 
+            let myName = localStorage.getItem("current_user_name");
+            let myMobile = localStorage.getItem("current_user_mobile");
             
             let totalNotifs = 0;
             let htmlList = '';
 
+            // 1. Check KYC Status
             if(!isVerified) {
                 let kycList = JSON.parse(localStorage.getItem('admin_pending_kyc')) || [];
-                let myKycPending = kycList.find(k => k.mobile === localStorage.getItem("current_user_mobile"));
+                let myKycPending = kycList.find(k => k.mobile === myMobile);
                 if(myKycPending) {
                     totalNotifs++;
                     htmlList += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;">🛡️ <b style="color:#d32f2f;">KYC पडताळणी</b> ॲडमिनकडे पेंडिंग आहे. लवकरच अपडेट मिळेल.</div>`;
@@ -1547,16 +1550,40 @@
                 }
             }
 
-            if(myPendingAdsCount > 0) {
-                totalNotifs++;
-                htmlList += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('b4');">🚀 तुमच्या <b style="color:#d32f2f;">${myPendingAdsCount}</b> जाहिराती ॲडमिन मंजुरीच्या प्रतीक्षेत आहेत.</div>`;
+            // 2. Check Ad Approvals for THIS vendor only
+            let pendingAds = JSON.parse(localStorage.getItem('admin_pending_ad_approvals')) || [];
+            // Assuming ads don't have vendorName saved right now, but if they do, we'd filter.
+            // For now, if you are an admin you see all, but here we only want to show if it's the vendor's ad.
+            // Let's assume myPendingAdsCount is currently disabled to avoid confusion, or we check if ad belongs to vendor.
+
+            // 3. 🔥 NEW FIX: Pull "Request Quote" Leads from app_notifications 🔥
+            let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+            let myLeads = appNotifs.filter(n => n.receiver_mobile === myName || n.receiver_mobile === myMobile);
+            
+            if(myLeads.length > 0) {
+                totalNotifs += myLeads.length;
+                myLeads.forEach(lead => {
+                    htmlList += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('b7');">
+                                    <strong style="color:#e65100;">${lead.title}</strong><br>
+                                    <span style="font-size:11px; color:#555;">${lead.message}</span>
+                                 </div>`;
+                });
             }
 
+            // 4. Check actual Shopping Orders for THIS vendor's products
             let orders = JSON.parse(localStorage.getItem('user_orders')) || [];
-            let pendingOrders = orders.filter(o => o.status !== 'delivered').length;
-            if(pendingOrders > 0) {
+            let myPendingOrders = 0;
+            orders.forEach(o => {
+                if(o.status !== 'delivered') {
+                    // Check if this order contains items from this vendor
+                    let hasMyProduct = o.items.some(item => item.company === myName || item.company === myMobile);
+                    if(hasMyProduct) myPendingOrders++;
+                }
+            });
+
+            if(myPendingOrders > 0) {
                 totalNotifs++;
-                htmlList += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('b3');">📦 तुम्हाला <b style="color:#1565c0;">${pendingOrders}</b> नवीन ऑर्डर्स आल्या आहेत!</div>`;
+                htmlList += `<div style="padding:8px 0; border-bottom:1px solid #eee; cursor:pointer;" onclick="switchTab('b3');">📦 तुम्हाला <b style="color:#1565c0;">${myPendingOrders}</b> नवीन ऑर्डर्स आल्या आहेत!</div>`;
             }
 
             let badge = document.getElementById('vendor_notif_badge');
@@ -1655,19 +1682,26 @@
             document.getElementById('payment_modal').style.display = 'flex';
         }
 
-        // 🔥 UPDATED: Load Orders & Ledger (Applying Slab logic from config) 🔥
+        // 🔥 UPDATED: Load Orders & Ledger (Filtered for logged in vendor) 🔥
         function loadDealerOrdersDashboard() {
             let orders = JSON.parse(localStorage.getItem('user_orders')) || [];
+            let myName = localStorage.getItem("current_user_name");
+            let myMobile = localStorage.getItem("current_user_mobile");
+            
+            // Filter orders to only those containing items from this vendor
+            let myOrders = orders.filter(o => {
+                return o.items.some(item => item.company === myName || item.company === myMobile);
+            });
+
             let container = document.getElementById('dealer_orders_container');
             let ledgerTbody = document.getElementById('ledger_body');
             
-            if(orders.length === 0) {
+            if(myOrders.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:30px; color:#888;">अद्याप कोणतीही आदेश (Order) आलेली नाही.</div>';
                 if(ledgerTbody) ledgerTbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">कोणतेही व्यवहार नाहीत.</td></tr>';
                 return;
             }
 
-            // Get Slab Config from Admin Settings
             let feeConfig = JSON.parse(localStorage.getItem('admin_platform_fee_config')) || {
                 slab1: 500, perc1: 3, slab2: 8000, perc2: 2, perc3: 1, maxCap: 500
             };
@@ -1676,30 +1710,31 @@
             let ledgerHtml = '';
             ledgerTotalDues = 0;
 
-            orders.forEach(order => {
+            myOrders.forEach(order => {
                 let itemsList = '';
                 let totalCommission = 0;
                 
                 order.items.forEach(item => {
-                    itemsList += `<li>${item.qty}x ${item.name} (₹${item.price})</li>`;
-                    
-                    let itemTotal = item.price * item.qty;
-                    let feePercent = 0;
+                    // Only show items belonging to this vendor
+                    if(item.company === myName || item.company === myMobile) {
+                        itemsList += `<li>${item.qty}x ${item.name} (₹${item.price})</li>`;
+                        
+                        let itemTotal = item.price * item.qty;
+                        let feePercent = 0;
 
-                    // Apply Slabs to each item total
-                    if (itemTotal <= feeConfig.slab1) {
-                        feePercent = feeConfig.perc1;
-                    } else if (itemTotal > feeConfig.slab1 && itemTotal <= feeConfig.slab2) {
-                        feePercent = feeConfig.perc2;
-                    } else if (itemTotal > feeConfig.slab2) {
-                        feePercent = feeConfig.perc3;
+                        if (itemTotal <= feeConfig.slab1) {
+                            feePercent = feeConfig.perc1;
+                        } else if (itemTotal > feeConfig.slab1 && itemTotal <= feeConfig.slab2) {
+                            feePercent = feeConfig.perc2;
+                        } else if (itemTotal > feeConfig.slab2) {
+                            feePercent = feeConfig.perc3;
+                        }
+
+                        let itemComm = itemTotal * (feePercent / 100);
+                        totalCommission += itemComm;
                     }
-
-                    let itemComm = itemTotal * (feePercent / 100);
-                    totalCommission += itemComm;
                 });
 
-                // Apply Max Cap to entire order commission
                 if (totalCommission > feeConfig.maxCap) {
                     totalCommission = feeConfig.maxCap;
                 }

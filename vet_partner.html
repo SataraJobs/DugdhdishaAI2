@@ -28,6 +28,7 @@
         .field { margin-bottom: 12px; }
         .field label { display: block; font-size: 12px; font-weight: bold; color: #444; margin-bottom: 6px; }
         input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; background: #fff;}
+        input[type="file"] { padding: 8px; font-size: 12px; background: #e3f2fd; border-color: #90caf9;}
         input:focus, select:focus { outline: none; border-color: var(--p-blue); }
 
         .price-input-wrapper { position: relative; }
@@ -50,10 +51,10 @@
         .apt-card.accepted { border-left-color: var(--p-green); }
         .apt-card h4 { margin: 0 0 8px 0; font-size: 15px; color: #333; }
         .apt-actions { display: flex; gap: 10px; margin-top: 12px; }
-        .btn-sm { padding: 8px 12px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; color: white; font-weight: bold;}
+        .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; color: white; font-weight: bold;}
     </style>
 </head>
-<body>
+<body onload="checkVetStatus()">
 
 <div class="container">
     <div class="header">
@@ -61,18 +62,25 @@
     </div>
     
     <div class="tabs">
-        <div class="tab active" onclick="switchTab('tab_register', this)">१. नोंदणी फॉर्म (Register)</div>
-        <div class="tab" onclick="switchTab('tab_dashboard', this)">२. माझा डॅशबोर्ड (Dashboard)</div>
+        <div class="tab active" id="btn_tab_register" onclick="switchTab('tab_register', this)">नवीन नोंदणी (Register)</div>
+        <div class="tab" id="btn_tab_dashboard" onclick="switchTab('tab_dashboard', this)" style="display: none;">माझा डॅशबोर्ड</div>
     </div>
 
-    <!-- ================= 1. DOCTOR REGISTRATION (LIVE) ================= -->
+    <!-- ================= 1. DOCTOR REGISTRATION (FULL KYC) ================= -->
     <div id="tab_register" class="content active">
         <div class="form-section">
-            <h4>👤 Basic Details (प्राथमिक माहिती)</h4>
-            <div class="field"><label>Full Name (संपूर्ण नाव) *</label><input type="text" id="v_name" placeholder="उदा. डॉ. अमोल पाटील"></div>
+            <h4>👤 वैयक्तिक माहिती (Basic Details)</h4>
+            <div class="field"><label>संपूर्ण नाव (Full Name) *</label><input type="text" id="v_name" placeholder="उदा. डॉ. अमोल पाटील"></div>
             <div class="grid-2">
-                <div class="field"><label>Mobile Number *</label><input type="number" id="v_mobile" placeholder="9876543210"></div>
-                <div class="field"><label>Qualification (पात्रता) *</label>
+                <div class="field"><label>मोबाईल नंबर *</label><input type="number" id="v_mobile" placeholder="9876543210"></div>
+                <div class="field"><label>ईमेल आयडी (Optional)</label><input type="email" id="v_email" placeholder="example@gmail.com"></div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>🎓 शैक्षणिक व व्यावसायिक माहिती</h4>
+            <div class="grid-2">
+                <div class="field"><label>शिक्षण/पात्रता (Qualification) *</label>
                     <select id="v_qual">
                         <option value="Ph.D">Ph.D</option>
                         <option value="MVSc">MVSc</option>
@@ -86,12 +94,25 @@
                         <option value="Independent Practitioner">Independent Practitioner</option>
                     </select>
                 </div>
+                <div class="field"><label>नोंदणी क्र. (Reg. No - जर असेल)</label><input type="text" id="v_reg_no" placeholder="MSVC-1234"></div>
             </div>
-            <div class="field"><label>Registration Number (जर लागू असेल)</label><input type="text" id="v_reg_no" placeholder="MSVC-1234"></div>
+        </div>
+
+        <!-- NEW KYC SECTION (ONLY PHOTOS) -->
+        <div class="form-section">
+            <h4>📑 KYC आणि शैक्षणिक कागदपत्रे</h4>
+            <div class="field">
+                <label>शैक्षणिक प्रमाणपत्र अपलोड करा *</label>
+                <input type="file" id="v_doc_edu" accept="image/*, application/pdf">
+            </div>
+            <div class="grid-2">
+                <div class="field"><label>आधार कार्ड फोटो *</label><input type="file" id="v_doc_aadhar" accept="image/*"></div>
+                <div class="field"><label>पॅन कार्ड फोटो (ऑप्शनल)</label><input type="file" id="v_doc_pan" accept="image/*"></div>
+            </div>
         </div>
 
         <div class="form-section">
-            <h4>💰 Charges & Radius (फी आणि कार्यक्षेत्र)</h4>
+            <h4>💰 फी आणि कार्यक्षेत्र (Charges & Location)</h4>
             <div class="grid-2">
                 <div class="field"><label>Farm Visit Fee (गोठ्यावरील व्हिजिट)</label><div class="price-input-wrapper"><span>₹</span><input type="number" id="c_farm" placeholder="500"></div></div>
                 <div class="field">
@@ -102,9 +123,12 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="field"><label>क्लिनिकचा संपूर्ण पत्ता (Clinic Address)</label><input type="text" id="v_address" placeholder="तुमच्या दवाखान्याचा किंवा घराचा पत्ता..."></div>
+
             <div class="gps-box">
                 <h4 style="margin:0 0 8px; color:#2e7d32;">📍 लाईव्ह लोकेशन (Google GPS)</h4>
-                <p style="font-size:12px; color:#555; margin-bottom:10px;">तुमच्या परिसरातील शेतकऱ्यांना तुमचे प्रोफाईल दाखवण्यासाठी लोकेशन आवश्यक आहे.</p>
+                <p style="font-size:12px; color:#555; margin-bottom:10px;">शेतकऱ्यांना तुमचे प्रोफाईल दाखवण्यासाठी लोकेशन आवश्यक आहे.</p>
                 <button class="btn btn-outline" onclick="getDoctorLocation()" id="btn_doc_loc">📍 Get Current Location</button>
                 <div id="doc_loc_display" style="font-size:12px; font-weight:bold; color:#1565c0; margin-top:10px; display:none;"></div>
                 <input type="hidden" id="v_lat"><input type="hidden" id="v_lon">
@@ -122,11 +146,15 @@
                 <p style="margin:4px 0 0; font-size:12px; opacity:0.9;" id="dash_edu">LSS</p>
                 <span style="font-size:12px; color:#ffd54f; font-weight:bold; display:block; margin-top:5px;">⭐ <span id="dash_rating">0.0</span> (<span id="dash_reviews">0</span> Reviews)</span>
             </div>
-            <div style="background:white; padding:5px; border-radius:6px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-                <select id="v_status" onchange="updateStatus()" style="border:none; background:transparent; font-size:12px; font-weight:bold; color:#333; padding:5px;">
+            <div style="text-align: right;">
+                <select id="v_status" onchange="updateStatus()" style="border:none; background:white; font-size:12px; font-weight:bold; color:#333; padding:5px; border-radius:4px; margin-bottom:8px;">
                     <option value="Online">🟢 Available</option>
                     <option value="Offline">🔴 Busy</option>
                 </select>
+                <br>
+                <!-- TABS / BUTTONS -->
+                <button class="btn-sm" style="background:#43a047; width:100%; margin-bottom:5px;" onclick="goToUserPage()">🏠 युजर पेज</button>
+                <button class="btn-sm" style="background:#d32f2f; width:100%;" onclick="logoutVet()">🚪 लॉग आऊट</button>
             </div>
         </div>
 
@@ -153,8 +181,23 @@
 
 <script>
     // ---------------------------------------------------------
-    // 1. TABS LOGIC
+    // 1. TABS & AUTO-DASHBOARD LOGIC
     // ---------------------------------------------------------
+    function checkVetStatus() {
+        let loggedInDoc = localStorage.getItem("current_logged_in_doc");
+        if (loggedInDoc) {
+            // जर डॉक्टरने आधीच फॉर्म भरला असेल, तर थेट डॅशबोर्ड उघडा
+            document.getElementById("btn_tab_register").style.display = "none";
+            document.getElementById("btn_tab_dashboard").style.display = "block";
+            switchTab('tab_dashboard', document.getElementById("btn_tab_dashboard"));
+        } else {
+            // नवीन असेल तर नोंदणी फॉर्म दाखवा
+            document.getElementById("btn_tab_dashboard").style.display = "none";
+            document.getElementById("btn_tab_register").style.display = "block";
+            switchTab('tab_register', document.getElementById("btn_tab_register"));
+        }
+    }
+
     function switchTab(tabId, element) {
         document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -162,6 +205,19 @@
         element.classList.add('active');
         
         if(tabId === 'tab_dashboard') loadDashboardAppointments();
+    }
+
+    function goToUserPage() {
+        // हे तुम्हाला तुमच्या मुख्य युजर ॲपच्या पानावर घेऊन जाईल
+        window.location.href = "index.html"; 
+    }
+
+    function logoutVet() {
+        if(confirm("तुम्हाला नक्की लॉग आऊट करायचे आहे का?")) {
+            // डॉक्टर सेशन क्लिअर करा आणि पेज रिफ्रेश करा (जेणेकरून फॉर्म पुन्हा दिसेल)
+            localStorage.removeItem("current_logged_in_doc");
+            window.location.reload(); 
+        }
     }
 
     // ---------------------------------------------------------
@@ -199,37 +255,48 @@
         let lat = document.getElementById('v_lat').value;
         
         if(!name || !mobile || !lat) { 
-            alert("नाव, मोबाईल नंबर आणि GPS लोकेशन अत्यंत आवश्यक आहे."); 
+            alert("नाव, मोबाईल नंबर आणि GPS लोकेशन भरणे अनिवार्य आहे."); 
             return; 
         }
 
-        // Live Doctor Object Profile
+        // Create Profile Object
         let docProfile = {
-            id: "DOC_" + new Date().getTime(), // Unique ID generation
+            id: "DOC_" + new Date().getTime(), 
             name: name, 
             mobile: mobile,
+            email: document.getElementById('v_email').value,
             qual: document.getElementById('v_qual').value,
             regNo: document.getElementById('v_reg_no').value,
+            kycSubmitted: true, // Photo attachments check can be added later
             lat: parseFloat(lat), 
             lon: parseFloat(document.getElementById('v_lon').value),
             radius: parseInt(document.getElementById('v_radius').value) || 10,
             charges: { farm: document.getElementById('c_farm').value || "Not Set" },
             status: "Online", 
-            isVerified: false, // In live, admin will verify this later
+            isVerified: false, 
             rating: 0.0, 
             reviewsCount: 0
         };
 
-        // Save to Database (LocalStorage for now, later API call to server)
+        // Save Doctor Profile to Database
         let allDoctors = JSON.parse(localStorage.getItem("live_vet_partners")) || [];
         allDoctors.push(docProfile);
         localStorage.setItem("live_vet_partners", JSON.stringify(allDoctors));
         
-        // Save Active Session
+        // Set as Active Vet User
         localStorage.setItem("current_logged_in_doc", JSON.stringify(docProfile));
 
-        alert("🎉 तुमचे प्रोफाईल यशस्वीरित्या तयार झाले आहे!");
-        document.querySelectorAll('.tab')[1].click(); // Auto redirect to dashboard
+        // 🔥 Send Notification to Super Admin Panel 🔥
+        let adminNotifs = JSON.parse(localStorage.getItem("admin_notifications")) || [];
+        adminNotifs.unshift({
+            title: "👨‍⚕️ नवीन व्हेटर्नरी डॉक्टर नोंदणी (KYC Pending)",
+            message: `${name} (${mobile}) यांनी व्हेटर्नरी डॉक्टर/मित्र बनण्यासाठी नोंदणी केली आहे. त्यांचे KYC तपासा.`,
+            date: new Date().toLocaleDateString()
+        });
+        localStorage.setItem("admin_notifications", JSON.stringify(adminNotifs));
+
+        alert("🎉 तुमचे प्रोफाईल आणि कागदपत्रे यशस्वीरित्या सबमिट झाली आहेत!");
+        window.location.reload(); // Reload to activate auto-dashboard
     }
 
     // ---------------------------------------------------------
@@ -239,7 +306,6 @@
         let doc = JSON.parse(localStorage.getItem("current_logged_in_doc"));
         if(!doc) return;
         
-        // Update UI with Vet Data
         document.getElementById('dash_name').innerText = doc.name;
         document.getElementById('dash_edu').innerText = doc.qual;
         document.getElementById('v_status').value = doc.status;
@@ -249,17 +315,16 @@
         let badge = document.getElementById('dash_badge');
         if(doc.isVerified) {
             badge.className = "verified-badge";
-            badge.innerText = "✅ Verified";
+            badge.innerText = "✅ KYC Verified";
         } else {
             badge.className = "pending-badge";
-            badge.innerText = "⏳ Under Review";
+            badge.innerText = "⏳ KYC Pending";
         }
 
-        // Fetch Live Appointments mapped to this Doctor ID
+        // Fetch Live Appointments
         let allApts = JSON.parse(localStorage.getItem("live_appointments")) || [];
         let myApts = allApts.filter(a => a.docId === doc.id);
         
-        // Count only Pending & Accepted for stats
         let activeCount = myApts.filter(a => a.status === 'Pending' || a.status === 'Accepted').length;
         document.getElementById('dash_apt_count').innerText = activeCount;
 
@@ -271,7 +336,6 @@
         }
 
         let html = '';
-        // Reverse array to show newest appointments first
         myApts.slice().reverse().forEach(apt => {
             let actionBtns = '';
             let statusStyle = '';
@@ -305,7 +369,7 @@
         if(index !== -1) {
             allApts[index].status = newStatus;
             localStorage.setItem("live_appointments", JSON.stringify(allApts));
-            loadDashboardAppointments(); // Refresh UI
+            loadDashboardAppointments(); 
         }
     }
 
@@ -315,7 +379,6 @@
             doc.status = document.getElementById('v_status').value;
             localStorage.setItem("current_logged_in_doc", JSON.stringify(doc));
             
-            // Update in Main Database Array
             let allDocs = JSON.parse(localStorage.getItem("live_vet_partners"));
             let index = allDocs.findIndex(d => d.id === doc.id);
             if(index !== -1) { 

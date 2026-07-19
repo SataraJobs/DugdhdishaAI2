@@ -189,7 +189,6 @@
         </div>
     </header>
 
-    <!-- PRIME BANNER -->
     <div class="prime-banner" onclick="alert('दुग्ध दिशा प्राईम मेंबरशिप: ₹९९/महिना मध्ये मिळवा मोफत डिलिव्हरी आणि AI डॉक्टरांचा प्राधान्याने सपोर्ट!')">
         <div class="prime-banner-text">
             <h4>⭐ दुग्ध दिशा प्राईम</h4>
@@ -198,7 +197,6 @@
         <button class="prime-btn">Join Now (₹९९)</button>
     </div>
 
-    <!-- CATEGORIES -->
     <div class="scroll-section">
         <div class="category-item"><div class="cat-icon">🐄</div><span class="cat-name">पशुखाद्य</span></div>
         <div class="category-item"><div class="cat-icon">🌾</div><span class="cat-name">चारा/मुरघास</span></div>
@@ -209,15 +207,11 @@
         <div class="category-item"><div class="cat-icon">📚</div><span class="cat-name">पुस्तके</span></div>
     </div>
 
-    <!-- BANNERS & AI -->
     <div class="banner-container">
         <div class="banner" id="dynamic_mall_banner" style="display: none;"></div>
     </div>
 
-    <!-- AI Recommendation Container (Hidden until dynamic data is added) -->
-    <div class="ai-recommendation" id="ai_recommendation_container">
-        <!-- Live AI Recommendations will be shown here -->
-    </div>
+    <div class="ai-recommendation" id="ai_recommendation_container"></div>
 
     <div class="quick-filters">
         <div class="filter-btn active">🔥 Best Seller</div>
@@ -232,30 +226,31 @@
         <a href="#">सर्व पहा &gt;</a>
     </div>
 
-    <!-- MAIN PRODUCT GRID -->
-    <div class="product-grid" id="main_product_grid">
-        <div id="dynamic_mineral_card" style="display: contents;"></div>
-    </div>
+    <div class="product-grid" id="main_product_grid"></div>
     
     <div id="no_product_msg" style="text-align: center; padding: 20px; color: #888; font-weight: bold; display: none;">
         सध्या कोणतेही प्रॉडक्ट उपलब्ध नाही.
     </div>
 
-    <!-- 🔥 PRODUCT MODAL 🔥 -->
+    <!-- Modals -->
     <div class="modal" id="productModal">
         <div class="modal-header">
             <h3>प्रॉडक्ट तपशील</h3>
             <div class="close-modal" onclick="closeProduct()">✕</div>
         </div>
         
-        <div class="prod-detail-img" id="main_product_image" style="display:flex; align-items:center; justify-content:center; font-size:80px; background:linear-gradient(to bottom, #e8f5e9, #c8e6c9); transition: 0.3s;">🌾</div>
-        
+        <!-- 🔥 NEW: Job Banner added below header inside modal 🔥 -->
+        <div style="width:100%; max-height:150px; overflow:hidden; background:#eee;">
+            <img src="job_banner.jpg" alt="Job Advertisement" style="width:100%; height:auto; object-fit:contain;">
+        </div>
+
+        <div class="prod-detail-img" id="main_product_image" style="display:flex; align-items:center; justify-content:center; font-size:80px; background:linear-gradient(to bottom, #e8f5e9, #c8e6c9); transition: 0.3s;">📦</div>
         <div class="image-gallery-container" id="product_gallery_container"></div>
         
         <div class="detail-body">
-            <div class="company-name" style="font-size:12px; margin-bottom:8px;"><span id="detail_company">दुग्ध दिशा प्रमाणित विक्रेता</span> <span style="color:#1976d2; background:#e3f2fd; padding:2px 4px; border-radius:4px; font-weight:bold;">✅ Verified Seller</span></div>
+            <div class="company-name" style="font-size:12px; margin-bottom:8px;"><span id="detail_company">दुग्ध दिशा प्रमाणित विक्रेता</span> <span style="color:#1976d2; margin-left:4px;">✅</span></div>
             <h2 class="detail-title" id="detail_title">-</h2>
-            <div class="rating-row" style="font-size:13px; margin-bottom:15px;"><span class="stars">★★★★★</span> ४.८ (३४५ Reviews) • 📍 तुमच्यापासून ४ किमी वर उपलब्ध</div>
+            <div class="rating-row" style="font-size:13px; margin-bottom:15px;"><span class="stars">★★★★★</span> ४.८ (३४५ Reviews)</div>
             
             <div class="price-row" style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:15px;">
                 <span class="offer-price" style="font-size:24px;" id="detail_offer_price">₹0</span>
@@ -285,48 +280,37 @@
                     <li><b>Status:</b> <span id="detail_stock" style="color:green; font-weight:bold;">In Stock</span></li>
                 </ul>
             </div>
-            
         </div>
 
         <div class="bottom-action-bar">
-            <!-- 🔥 FIX: Dynamic ID added for proper click binding 🔥 -->
-            <button class="btn-quote" id="detail_quote_btn">📝 Request Quote<br><span style="font-weight:normal; font-size:10px;">(Tender / Bulk)</span></button>
+            <button class="btn-quote" id="detail_quote_btn">📝 Request Quote</button>
             <button class="btn-buy" id="detail_buy_btn">🛒 Buy Now</button>
         </div>
     </div>
 
-    <!-- 🔥 CART MODAL 🔥 -->
+    <!-- Cart Modal -->
     <div class="modal" id="cartModal">
-        <div class="modal-header">
-            <h3>तुमची खरेदी (Cart) 🛒</h3>
-            <div class="close-modal" onclick="closeCart()">✕</div>
-        </div>
+        <div class="modal-header"><h3>तुमची खरेदी (Cart) 🛒</h3><div class="close-modal" onclick="closeCart()">✕</div></div>
         <div class="detail-body" id="cartItemsContainer" style="padding-bottom: 90px; padding-top: 10px;"></div>
         <div class="bottom-action-bar" style="justify-content: space-between; align-items: center; border-top: 1px solid #eee;">
-            <div>
-                <div style="font-size: 12px; color: #666; font-weight: bold;">एकूण रक्कम:</div>
-                <div style="font-size: 20px; font-weight: 900; color: #d32f2f;" id="cartTotalAmt">₹0</div>
-            </div>
+            <div><div style="font-size: 12px; color: #666; font-weight: bold;">एकूण रक्कम:</div><div style="font-size: 20px; font-weight: 900; color: #d32f2f;" id="cartTotalAmt">₹0</div></div>
             <button class="btn-buy" style="flex: none; padding: 12px 25px; background: #ff9800; color: white;" onclick="openCheckout()">पुढे जा (Checkout) ➡️</button>
         </div>
     </div>
 
-    <!-- 🔥 CHECKOUT MODAL 🔥 -->
+    <!-- Checkout Modal -->
     <div class="modal" id="checkoutModal">
-        <div class="modal-header">
-            <h3>चेकआउट (Checkout) 🚚</h3>
-            <div class="close-modal" onclick="closeCheckout()">✕</div>
-        </div>
+        <div class="modal-header"><h3>चेकआउट (Checkout) 🚚</h3><div class="close-modal" onclick="closeCheckout()">✕</div></div>
         <div class="detail-body" style="padding-bottom: 20px;">
-            <h4 style="margin: 0 0 10px; font-size: 14px;">📍 डिलिव्हरीचा पत्ता (Shipping Address)</h4>
-            <div class="form-group"><input type="text" id="chk_name" placeholder="पूर्ण नाव (उदा. रमेश पाटील)"></div>
-            <div class="form-group"><input type="number" id="chk_mobile" placeholder="मोबाईल नंबर (उदा. 9822XXXXXX)"></div>
-            <div class="form-group"><textarea id="chk_address" rows="3" placeholder="संपूर्ण पत्ता (घर क्र., रस्ता, गाव...)"></textarea></div>
+            <h4 style="margin: 0 0 10px; font-size: 14px;">📍 डिलिव्हरीचा पत्ता</h4>
+            <div class="form-group"><input type="text" id="chk_name" placeholder="पूर्ण नाव"></div>
+            <div class="form-group"><input type="number" id="chk_mobile" placeholder="मोबाईल नंबर"></div>
+            <div class="form-group"><textarea id="chk_address" rows="3" placeholder="संपूर्ण पत्ता"></textarea></div>
             <div class="form-group" style="display:flex; gap:10px;">
-                <div style="flex:1;"><input type="number" id="chk_pincode" placeholder="पिनकोड (415001)" onblur="calculateFinalBill()"></div>
-                <div style="flex:1;"><input type="text" id="chk_district" placeholder="जिल्हा (उदा. सातारा)"></div>
+                <div style="flex:1;"><input type="number" id="chk_pincode" placeholder="पिनकोड" onblur="calculateFinalBill()"></div>
+                <div style="flex:1;"><input type="text" id="chk_district" placeholder="जिल्हा"></div>
             </div>
-
+            
             <div style="background: white; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
                 <h4 style="margin: 0 0 10px; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 8px;">🧾 बिल तपशील (Order Summary)</h4>
                 <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #555;">
@@ -338,7 +322,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="checkout-actions">
             <button class="btn-action-large" style="background:#ff9800; box-shadow: 0 4px 0 #e65100;" onclick="processCOD()">
                 🏠 कॅश ऑन डिलिव्हरी (COD) <br>
@@ -358,21 +341,15 @@
         <div class="crop-modal-content">
             <div class="crop-container"><img id="crop_image_element" src="" alt="Image to crop"></div>
             <div class="crop-controls">
-                <button class="crop-btn" onclick="cropper.rotate(-90)">↺ Rotate</button>
-                <button class="crop-btn" onclick="cropper.rotate(90)">↻ Rotate</button>
-                <button class="crop-btn" onclick="cropper.setAspectRatio(1)">1:1 Square</button>
-                <button class="crop-btn" onclick="cropper.setAspectRatio(4/3)">4:3 Banner</button>
-            </div>
-            <div style="display:flex; gap:10px; width:100%;">
-                <button class="crop-btn save" style="flex:1;" onclick="saveCroppedImage()">✅ Save Photo</button>
-                <button class="crop-btn" style="background:#e0e0e0; color:#333; flex:1;" onclick="closeCropModal()">✕ Cancel</button>
+                <button class="crop-btn" onclick="cropper.rotate(-90)">↺</button>
+                <button class="crop-btn" onclick="cropper.rotate(90)">↻</button>
+                <button class="crop-btn" onclick="saveCroppedImage()">✅ Save</button>
             </div>
         </div>
     </div>
 
     <div id="toast">✅ कार्टमध्ये प्रॉडक्ट ॲड झाले!</div>
 
-    <!-- Bottom Nav -->
     <div class="bottom-nav-bar">
         <a href="index.html" class="b-nav-item"><span class="b-nav-icon">🏠</span><span class="b-nav-text">होम</span></a>
         <a href="kharedi_vikri.html" class="b-nav-item"><span class="b-nav-icon">🐄</span><span class="b-nav-text">बाजार</span></a>
@@ -381,9 +358,7 @@
         <a href="my_account.html" class="b-nav-item"><span class="b-nav-icon">👤</span><span class="b-nav-text">खाते</span></a>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
     <script>
         window.currentBaseTotal = 0;
         window.currentOnlineTotal = 0;
@@ -432,7 +407,6 @@
                 }
             }
 
-            // डमी ॲड काढून टाकली आहे. जर लाइव्ह ॲड नसेल, तर बॅनर दिसणार नाही.
             if(!hasBannerAd && bannerBox) {
                 bannerBox.style.display = 'none';
             }
@@ -882,16 +856,16 @@
             window.open(whatsappUrl, '_blank');
         }
 
-        // 🔥 NEW & UPDATED: Request Quote Function (Admin + Supplier Notification) 🔥
+        // 🔥 FIX: WhatsApp open code completely removed. Notifications sent internally only. 🔥
         function requestQuote(prodName, vendorName) {
             let qty = prompt(prodName + "\n\nतुम्हाला किती किलो/नग (Quantity) हवे आहेत? (उदा. 500 kg, 100 bags):");
             
             if(qty) {
-                // १. ग्राहकाची माहिती मिळवणे
+                // 1. Get Customer Info
                 let userName = localStorage.getItem("current_user_name") || "शेतकरी/ग्राहक";
                 let userMobile = localStorage.getItem("current_user_mobile") || "माहिती नाही";
 
-                // २. ॲडमिनला नोटिफिकेशन पाठवणे (Admin Panel)
+                // 2. Notify Admin
                 let adminNotifs = JSON.parse(localStorage.getItem("admin_notifications")) || [];
                 adminNotifs.unshift({
                     title: "📝 नवीन कोटेशन रिक्वेस्ट (Bulk Order)",
@@ -900,11 +874,11 @@
                 });
                 localStorage.setItem("admin_notifications", JSON.stringify(adminNotifs));
 
-                // ३. सप्लायरला (Vendor) नोटिफिकेशन पाठवणे (App Notification)
+                // 3. Notify Supplier (Vendor) internally via app_notifications
                 if (vendorName) {
                     let appNotifs = JSON.parse(localStorage.getItem('app_notifications')) || [];
                     appNotifs.push({
-                        receiver_mobile: vendorName, // Vendor's ID/Mobile
+                        receiver_mobile: vendorName,
                         title: "📝 नवीन कोटेशन रिक्वेस्ट (Bulk Order)!",
                         message: `श्री. ${userName} यांना तुमच्या '${prodName}' ची ${qty} प्रमाणात आवश्यकता आहे. कृपया कोटेशन तयार करा.`,
                         date: new Date().toLocaleDateString('mr-IN'),
@@ -914,15 +888,10 @@
                     localStorage.setItem('app_notifications', JSON.stringify(appNotifs));
                 }
 
-                // ४. ग्राहकाला स्क्रीनवर अलर्ट दाखवणे
+                // 4. Show success alert to User (WhatsApp will NOT open)
                 alert("✅ तुमची रिक्वेस्ट ॲडमिन आणि सप्लायर दोघांनाही पाठवली आहे! लवकरच तुम्हाला संपर्क केला जाईल.");
                 
                 closeProduct();
-
-                // ५. (पर्यायी) WhatsApp वरून ॲडमिनला मेसेज पाठवणे
-                let message = `*Bulk Order Request (Tender)*\n\n👤 नाव: ${userName}\n📞 मोबाईल: ${userMobile}\n📦 प्रॉडक्ट: ${prodName}\n⚖️ अपेक्षित प्रमाण: ${qty}\n\nमला या प्रॉडक्टसाठी होलसेल रेट (Quote) हवा आहे.`;
-                let whatsappUrl = `https://wa.me/919579535290?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
             }
         }
     </script>

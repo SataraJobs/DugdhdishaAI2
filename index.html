@@ -13,35 +13,59 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            // चेक करा युजर डीलर आहे का (रोल तपासा म्हणजे नवीन शेतकरी युजरला हा टॅब दिसणार नाही)
+            // युजरचा रोल आणि व्हेरिफिकेशन स्टेटस तपासा
             let role = localStorage.getItem("current_logged_in_role");
             let isVerified = localStorage.getItem("vendor_verified") === 'true' || localStorage.getItem("vendor_verified") === true;
-            let isVerifiedDealer = (role === 'dealer' && isVerified);
             
-            // चेक करा तो स्वतः युजर पेजवर आला आहे का (Session)
-            let fromDealerPage = sessionStorage.getItem("visited_user_page") === 'true';
+            // चेक करा तो स्वतः मुद्दामून 'शेतकरी डॅशबोर्डवर' आला आहे का (Back Button दाबून)
+            let fromSpecialPage = sessionStorage.getItem("visited_user_page") === 'true';
 
-            // जर तो डीलर आहे आणि ॲप नव्याने उघडले आहे (Session रिकामा आहे)...
-            if(isVerifiedDealer && !fromDealerPage) {
-                // त्याला आपोआप बिझनेस डॅशबोर्डवर फेका
-                window.location.href = "business_dashboard.html";
+            // 🚀 नियम १: जर युजर प्रमाणित "डीलर" असेल आणि ॲप नव्याने उघडले असेल...
+            if (role === 'dealer' && isVerified && !fromSpecialPage) {
+                window.location.replace("business_dashboard.html"); // थेट डीलर डॅशबोर्डला पाठवा
+                return;
             }
             
-            // जर तो 'युजर पेजला जा' दाबून आला असेल, तर इथेच राहू द्या आणि "डीलर बना" बटणाचे नाव बदलून ते दाखवा
-            if(isVerifiedDealer) {
-                let dealerBtn = document.getElementById('dealer_btn_top');
-                if(dealerBtn) {
-                    dealerBtn.innerText = "🏪 माझे दुकान"; // लांबी कमी करण्यासाठी 'Shop' शब्द काढला
-                    dealerBtn.style.background = "linear-gradient(145deg, #2e7d32, #1b5e20)";
-                    dealerBtn.style.borderColor = "#1b5e20";
-                    dealerBtn.style.display = "inline-block"; // डीलर असेल तरच हे बटण दिसेल
-                }
-
-                // साईड मेनूमधील बटण सुद्धा 'माझे दुकान' करा
-                let sideMenuDealer = document.getElementById('side_menu_dealer_btn');
-                if(sideMenuDealer) {
-                    sideMenuDealer.innerHTML = '<span class="m-icon">🏪</span> माझे दुकान';
-                    sideMenuDealer.style.display = "flex"; // साईड मेनूमध्ये दिसेल
+            // 🚀 नियम २: जर युजर प्रमाणित "पशुवैद्यक (Vet)" असेल आणि ॲप नव्याने उघडले असेल...
+            else if (role === 'vet' && isVerified && !fromSpecialPage) {
+                // (टीप: 'vet_dashboard.html' च्या जागी तुमच्या व्हेट डॅशबोर्डच्या फाईलचे खरे नाव टाका)
+                window.location.replace("vet_dashboard.html"); 
+                return;
+            }
+            
+            // 🚀 नियम ३: जर तो डीलर/व्हेट आहे, पण स्वतः 'शेतकरी डॅशबोर्डवर (index.html)' आला आहे...
+            // तर वरचे "डीलर बना" बटण बदलून "माझे दुकान" किंवा "माझे क्लिनिक" करा.
+            if (isVerified) {
+                let topBtn = document.getElementById('dealer_btn_top');
+                let sideBtn = document.getElementById('side_menu_dealer_btn');
+                
+                if (role === 'dealer') {
+                    if(topBtn) {
+                        topBtn.innerText = "🏪 माझे दुकान";
+                        topBtn.style.background = "linear-gradient(145deg, #2e7d32, #1b5e20)";
+                        topBtn.style.borderColor = "#1b5e20";
+                        topBtn.style.display = "inline-block";
+                        topBtn.onclick = function() { window.location.href = "business_dashboard.html"; };
+                    }
+                    if(sideBtn) {
+                        sideBtn.innerHTML = '<span class="m-icon">🏪</span> माझे दुकान';
+                        sideBtn.style.display = "flex";
+                        sideBtn.onclick = function() { window.location.href = "business_dashboard.html"; };
+                    }
+                } 
+                else if (role === 'vet') {
+                    if(topBtn) {
+                        topBtn.innerText = "🩺 माझे क्लिनिक";
+                        topBtn.style.background = "linear-gradient(145deg, #1976d2, #1565c0)";
+                        topBtn.style.borderColor = "#1565c0";
+                        topBtn.style.display = "inline-block";
+                        topBtn.onclick = function() { window.location.href = "vet_dashboard.html"; }; 
+                    }
+                    if(sideBtn) {
+                        sideBtn.innerHTML = '<span class="m-icon">🩺</span> माझे क्लिनिक';
+                        sideBtn.style.display = "flex";
+                        sideBtn.onclick = function() { window.location.href = "vet_dashboard.html"; }; 
+                    }
                 }
             }
         });
@@ -328,7 +352,7 @@
             <h3 style="margin:0; color:#1b5e20;">🤝 आमच्या फॅमिलीमध्ये जॉईन व्हा</h3>
             <span onclick="closeJoinUsModal()" style="font-size:20px; cursor:pointer; color:#555;">✖</span>
         </div>
-        <p style="font-size: 11px; color: #666; margin-top:-5px; margin-bottom: 15px;">तुम्ही आमच्या प्लॅटफॉर्मवर व्यावसायिक म्हणून सहभागी होऊ शकता:</p>
+        <p style="font-size: 11px; color: #666; margin-top:-5px; margin-bottom: 15px;">तुमच्या आमच्या प्लॅटफॉर्मवर व्यावसायिक म्हणून सहभागी होऊ शकता:</p>
         
         <!-- Option 1: Vet Partner -->
         <div class="vet-card" style="border-left-color: #1976d2;">
@@ -738,6 +762,7 @@
         
         if(isPlanActive(featureType)) {
             window.location.href = targetUrl;
+            return;
         } else {
             alert("🔒 हे प्रीमियम फीचर लॉक झाले आहे!\n\nतुमची मुदत संपली आहे किंवा तुम्ही अद्याप योग्य प्लॅन खरेदी केलेला नाही. सुविधेचा लाभ घेण्यासाठी कृपया 'माझे खाते' मधून प्लॅन रिन्यू करा.");
             window.location.href = "my_account.html";

@@ -85,7 +85,6 @@
 
         <div class="divider">किंवा (OR)</div>
 
-        <!-- 🔥 OTP SECTION 🔥 -->
         <div class="input-group" id="otp_group">
             <label>OTP ने लॉगिन करा</label>
             <input type="number" id="login_otp" placeholder="४ अंकी OTP" maxlength="4" style="letter-spacing: 5px;">
@@ -309,7 +308,7 @@
         }
 
         if(mobile.length !== 10) {
-            alert("मोबाईल नंबर १० अंकी असणे आवश्यक কাশী.");
+            alert("मोबाईल नंबर १० अंकी असणे आवश्यक आहे.");
             return;
         }
 
@@ -325,6 +324,7 @@
             return;
         }
 
+        // 🔥 प्रोव्हिजन १: नवीन युजर 'isVerified: false' आणि 'kyc_status: none' ने तयार होईल
         let newUser = {
             name: name,
             mobile: mobile,
@@ -336,7 +336,8 @@
             password: pass,
             secQuestion: secQ,
             secAnswer: secA,
-            isVerified: true 
+            isVerified: false,       // <--- हे false केले आहे. यामुळे फॉर्म हमखास दिसेल.
+            kyc_status: 'none'       // <--- फॉर्म ॲडमिनला पाठवण्यासाठी ही नवीन प्रॉपर्टी ॲड केली आहे.
         };
 
         users.push(newUser);
@@ -401,7 +402,7 @@
                 localStorage.setItem("current_logged_in_role", foundUser.role);
                 localStorage.setItem("current_user_name", foundUser.name);
                 localStorage.setItem("current_user_mobile", foundUser.mobile); 
-                localStorage.setItem("vendor_verified", foundUser.isVerified); 
+                localStorage.setItem("vendor_verified", foundUser.isVerified); // false असेल तर फॉर्म पॉप-अप होईल
                 
                 if(foundUser.district) localStorage.setItem("current_user_district", foundUser.district);
                 if(foundUser.pincode) localStorage.setItem("current_user_pincode", foundUser.pincode);

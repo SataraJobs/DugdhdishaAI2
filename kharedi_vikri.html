@@ -5,29 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>दुग्ध दिशा AI - खरेदी विक्री</title>
     <style>
-        :root{
-            --green:#2e7d32;
-            --blue:#1976d2;
-            --orange:#e65100;
-            --bg:#f4f7f6;
-            --card:#fff;
-            --text:#222;
-        }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); }
-        .app-container { max-width: 600px; margin: 0 auto; padding-bottom: 80px; background: var(--bg); min-height: 100vh; position: relative;}
+        :root{ --green:#2e7d32; --blue:#1976d2; --orange:#e65100; --bg:#f4f7f6; --card:#fff; --text:#222; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); padding-bottom: 85px !important;}
+        .app-container { max-width: 600px; margin: 0 auto; min-height: 100vh; position: relative;}
         
         /* Top Navigation */
-        .top-dashboard { background: linear-gradient(135deg, #2e7d32, #1b5e20); padding: 20px; border-radius: 0 0 20px 20px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+        .top-dashboard { background: linear-gradient(135deg, #2e7d32, #1b5e20); padding: 20px; border-radius: 0 0 20px 20px; color: white;}
         .top-dashboard a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; }
         .header-titles h1 { margin: 10px 0 5px; font-size: 22px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);}
         .header-titles p { margin: 0; font-size: 13px; color: #e8f5e9; }
 
         /* Premium Banner Hook */
-        .premium-banner { background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); margin: 15px 20px; padding: 15px; border-radius: 12px; border: 1px solid #ffb300; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 8px rgba(255, 152, 0, 0.15); cursor: pointer; transition: 0.3s;}
-        .premium-banner:active { transform: scale(0.98); }
+        .premium-banner { background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); margin: 15px 20px; padding: 15px; border-radius: 12px; border: 1px solid #ffb300; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 8px rgba(255, 152, 0, 0.15); cursor: pointer;}
         .premium-text h4 { margin: 0 0 5px 0; color: #e65100; font-size: 15px;}
-        .premium-text p { margin: 0; font-size: 11.5px; color: #555; line-height: 1.4; font-weight: bold;}
-        .premium-btn { background: #e65100; color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-align: center; display: block; border:none; cursor:pointer; box-shadow: 0 2px 5px rgba(230,81,0,0.3);}
+        .premium-text p { margin: 0; font-size: 11.5px; color: #555; font-weight: bold;}
+        .premium-btn { background: #e65100; color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; border:none; box-shadow: 0 2px 5px rgba(230,81,0,0.3);}
 
         /* Market Tabs */
         .market-tabs { display: flex; margin: 0 20px 15px; border-bottom: 2px solid #ddd; }
@@ -37,13 +29,11 @@
         /* Animal Cards */
         .animal-list { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
         .card { background: var(--card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); position: relative; border: 1px solid #eee;}
+        .urgent-badge { position: absolute; top: 10px; left: -25px; background: #d32f2f; color: white; font-size: 10px; font-weight: 900; padding: 5px 30px; transform: rotate(-45deg); z-index: 10;}
         
-        /* Premium VIP styling */
-        .card.premium { border: 2px solid #ff9800; }
-        .urgent-badge { position: absolute; top: 10px; left: -25px; background: #d32f2f; color: white; font-size: 10px; font-weight: 900; padding: 5px 30px; transform: rotate(-45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 10; letter-spacing: 1px;}
-        
-        .card-img { width: 100%; height: 180px; background: #ddd; position: relative;}
+        .card-img { width: 100%; height: 200px; background: #ddd; position: relative; cursor: pointer;}
         .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-count { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
         .price-tag { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #fff; padding: 6px 12px; border-radius: 6px; font-weight: 900; font-size: 16px;}
         
         .card-content { padding: 15px; }
@@ -54,95 +44,52 @@
         .detail-item { font-size: 12.5px; color: #555; background: #f9f9f9; padding: 6px 10px; border-radius: 6px; border: 1px solid #f0f0f0; font-weight: 600;}
         .detail-item strong { color: #333; font-weight: 900;}
 
-        .call-btn { display: block; width: 100%; text-align: center; background: #e8f5e9; color: var(--green); padding: 12px; border-radius: 8px; font-weight: 900; text-decoration: none; border: 1px solid var(--green); transition: 0.2s; box-sizing: border-box;}
-        .call-btn:active { background: var(--green); color: white; }
+        .call-btn { display: block; width: 100%; text-align: center; background: #e8f5e9; color: var(--green); padding: 12px; border-radius: 8px; font-weight: 900; text-decoration: none; border: 1px solid var(--green); box-sizing: border-box;}
+        
+        /* Action Buttons */
+        .action-btns { display: flex; gap: 10px; margin-top: 10px; }
+        .sold-btn { flex: 1; background: #ff9800; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .delete-btn { flex: 1; background: #d32f2f; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        
+        /* Sold Overlay */
+        .sold-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); display: flex; justify-content: center; align-items: center; z-index: 5; pointer-events: none;}
+        .sold-stamp { color: #d32f2f; font-size: 40px; font-weight: 900; border: 4px solid #d32f2f; padding: 5px 20px; transform: rotate(-20deg); letter-spacing: 2px;}
 
-        /* Floating Action Button */
-        .fab-add { position: fixed; bottom: 85px; right: 25px; background: linear-gradient(145deg, #1976d2, #1565c0); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; box-shadow: 0 6px 15px rgba(25, 118, 210, 0.4); text-decoration: none; z-index: 100; border: none; cursor: pointer; transition: 0.2s;}
-        .fab-add:active { transform: scale(0.9); }
+        .fab-add { position: fixed; bottom: 85px; right: 25px; background: linear-gradient(145deg, #1976d2, #1565c0); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; box-shadow: 0 6px 15px rgba(25, 118, 210, 0.4); text-decoration: none; z-index: 100; border: none; cursor: pointer;}
+        
+        /* Full Screen Image Viewer Modal */
+        .image-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+        .close-viewer-btn { position: absolute; top: 20px; right: 20px; background: white; color: black; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; z-index: 10000; }
+        .viewer-images-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 80%; gap: 10px; padding: 20px 0; }
+        .viewer-images-container img { scroll-snap-align: center; max-width: 90%; max-height: 100%; object-fit: contain; margin: 0 auto; flex-shrink: 0; }
+        .viewer-hint { color: white; margin-top: 10px; font-size: 14px; }
 
-        /* 🔥 PREMIUM POPUP MODAL (GATEKEEPER) 🔥 */
+        /* Bottom Nav */
+        .bottom-nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: #ffffff; box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08); display: flex; justify-content: space-around; align-items: center; padding: 8px 0; z-index: 1000; border-radius: 15px 15px 0 0; }
+        .b-nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #757575; padding: 5px 10px; border-radius: 10px; }
+        .b-nav-icon { font-size: 22px; margin-bottom: 2px; filter: grayscale(100%); }
+        .b-nav-text { font-size: 10px; font-weight: 800; }
+        .b-nav-item.active { background: #e8f5e9; color: #1b5e20; }
+        .b-nav-item.active .b-nav-icon { filter: grayscale(0%); transform: scale(1.15); }
+
+        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);}
         .modal-box { background: #fff; padding: 25px 20px; border-radius: 16px; width: 90%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; animation: popUp 0.3s ease-out;}
         @keyframes popUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        
         .modal-icon { font-size: 50px; margin-bottom: 10px; text-align: center; line-height: 1; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.2)); }
         .modal-title { color: #d32f2f; font-size: 20px; font-weight: 900; margin: 0 0 10px; text-align: center;}
         .modal-desc { font-size: 13.5px; color: #444; margin: 0 0 15px; line-height: 1.5; font-weight: 600; text-align: center;}
-        
         .feature-list { list-style: none; padding: 0; margin: 0 0 20px; font-size: 13px; color: #444; font-weight: bold;}
         .feature-list li { margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;}
         .feature-list li span { color: #4caf50; font-weight: 900;}
-
         .pay-amount-box { background: #fff8e1; border: 2px dashed #ffb300; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px;}
         .pay-amount-box h2 { margin: 0; color: #e65100; font-size: 28px; font-weight: 900;}
         .pay-amount-box p { margin: 5px 0 0; color: #666; font-size: 11px; font-weight: bold;}
-
-        /* Payment Form Inside Modal */
         .payment-form { display: none; margin-bottom: 15px;}
         .input-field { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; background: #fafafa; font-weight: bold; margin-bottom: 10px;}
-        .input-field:focus { border-color: #e65100; outline: none; background: #fff;}
-
-        .btn-pay-now { background: linear-gradient(145deg, #f57c00, #e65100); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 4px 10px rgba(230,81,0,0.4); text-decoration: none; display: block; box-sizing: border-box; transition: 0.2s; text-align: center;}
-        .btn-pay-now:active { transform: translateY(2px); box-shadow: none;}
-        
-        .btn-submit-utr { background: #2e7d32; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; display: none; box-shadow: 0 4px 10px rgba(46, 125, 50, 0.4);}
-        
+        .btn-pay-now { background: linear-gradient(145deg, #f57c00, #e65100); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 4px 10px rgba(230,81,0,0.4); text-decoration: none; display: block; box-sizing: border-box; text-align: center;}
+        .btn-submit-utr { background: #2e7d32; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; display: none;}
         .btn-close-modal { background: #e0e0e0; color: #333; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; width: 100%; margin-top: 10px; }
-
-        /* 🔥 BOTTOM NAVIGATION BAR STYLES 🔥 */
-        body { padding-bottom: 85px !important; }
-        
-        .bottom-nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 600px;
-            background: #ffffff;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 8px 0;
-            z-index: 1000;
-            border-radius: 15px 15px 0 0;
-        }
-        
-        .b-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #757575;
-            transition: 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 10px;
-        }
-        
-        .b-nav-icon {
-            font-size: 22px;
-            margin-bottom: 2px;
-            filter: grayscale(100%);
-            transition: 0.3s;
-        }
-        
-        .b-nav-text {
-            font-size: 10px;
-            font-weight: 800;
-        }
-        
-        /* Active State */
-        .b-nav-item.active {
-            background: #e8f5e9;
-            color: #1b5e20;
-        }
-        
-        .b-nav-item.active .b-nav-icon {
-            filter: grayscale(0%);
-            transform: scale(1.15);
-        }
     </style>
 </head>
 <body onload="initializeMarketPage()">
@@ -157,7 +104,7 @@
         </div>
     </div>
 
-    <!-- 🔥 Premium Banner (Price will be updated dynamically) 🔥 -->
+    <!-- Premium Banner -->
     <div class="premium-banner" id="top_upgrade_banner" onclick="handleAdCreation()">
         <div class="premium-text">
             <h4>⭐ दिशा प्राईम (<span id="banner_price_text">₹९९</span>)</h4>
@@ -168,18 +115,24 @@
 
     <!-- Tabs -->
     <div class="market-tabs">
-        <div class="m-tab active" onclick="switchTab(this)">बाजार (Buy)</div>
-        <div class="m-tab" onclick="switchTab(this)">माझ्या जाहिराती</div>
+        <div class="m-tab active" id="tab-buy" onclick="switchTab('buy')">बाजार (Buy)</div>
+        <div class="m-tab" id="tab-my-ads" onclick="switchTab('my-ads')">माझ्या जाहिराती</div>
     </div>
 
-    <!-- 🔥 EMPTY CONTAINER FOR REAL ANIMALS (Dummy ads removed) 🔥 -->
     <div class="animal-list" id="animal_list_container">
         <!-- Live ads will be populated here via JavaScript -->
     </div>
 
-    <!-- Floating Action Button to Add New Animal -->
+    <!-- Floating Add Button -->
     <button class="fab-add" onclick="handleAdCreation()">+</button>
 
+</div>
+
+<!-- Full Screen Image Viewer -->
+<div class="image-viewer-modal" id="imageViewerModal">
+    <button class="close-viewer-btn" onclick="closeImageViewer()">✕ बंद करा</button>
+    <div class="viewer-images-container" id="viewerImagesContainer"></div>
+    <div class="viewer-hint">👉 फोटो बाजूला सरकवा (Swipe)</div>
 </div>
 
 <!-- 🔥 STRICT PREMIUM GATEKEEPER MODAL 🔥 -->
@@ -205,7 +158,7 @@
         <!-- INITIAL PAY BUTTON -->
         <button class="btn-pay-now" id="btn_init_pay" onclick="showPaymentForm()">💳 पे करा आणि जाहिरात द्या</button>
         
-        <!-- HIDDEN PAYMENT FORM (Shows after clicking Pay Now) -->
+        <!-- HIDDEN PAYMENT FORM -->
         <div class="payment-form" id="payment_form_section">
             <div style="text-align: center; margin-bottom: 15px;">
                 <div style="font-weight:900; color:#1b5e20; font-size:16px;">दुग्ध दिशा AI</div>
@@ -219,74 +172,89 @@
         </div>
 
         <button class="btn-submit-utr" id="btn_submit_utr" onclick="submitAdRequest()">✅ पेमेंट कन्फर्म करा</button>
-
         <button class="btn-close-modal" onclick="closeAddAnimalModal()">✕ रद्द करा</button>
     </div>
 </div>
 
-<!-- 🔥 BOTTOM NAVIGATION BAR 🔥 -->
+<!-- BOTTOM NAVIGATION BAR -->
 <div class="bottom-nav-bar">
-    <a href="index.html" class="b-nav-item">
-        <span class="b-nav-icon">🏠</span>
-        <span class="b-nav-text">होम</span>
-    </a>
-    <a href="kharedi_vikri.html" class="b-nav-item active"> <!-- Active for Bazar Page -->
-        <span class="b-nav-icon">🐄</span>
-        <span class="b-nav-text">बाजार</span>
-    </a>
-    <a href="krushi_mall.html" class="b-nav-item">
-        <span class="b-nav-icon">🛒</span>
-        <span class="b-nav-text">मॉल</span>
-    </a>
-    <a href="ration_balancer.html" class="b-nav-item">
-        <span class="b-nav-icon">⚖️</span>
-        <span class="b-nav-text">आहार</span>
-    </a>
-    <a href="my_account.html" class="b-nav-item">
-        <span class="b-nav-icon">👤</span>
-        <span class="b-nav-text">खाते</span>
-    </a>
+    <a href="index.html" class="b-nav-item"><span class="b-nav-icon">🏠</span><span class="b-nav-text">होम</span></a>
+    <a href="kharedi_vikri.html" class="b-nav-item active"><span class="b-nav-icon">🐄</span><span class="b-nav-text">बाजार</span></a>
+    <a href="krushi_mall.html" class="b-nav-item"><span class="b-nav-icon">🛒</span><span class="b-nav-text">मॉल</span></a>
+    <a href="ration_balancer.html" class="b-nav-item"><span class="b-nav-icon">⚖️</span><span class="b-nav-text">आहार</span></a>
+    <a href="my_account.html" class="b-nav-item"><span class="b-nav-icon">👤</span><span class="b-nav-text">खाते</span></a>
 </div>
 
 <script>
-    // --- MAIN INITIALIZATION ---
+    let currentTab = 'buy';
+
     function initializeMarketPage() {
         checkActivePlanOnLoad();
         loadRealMarketAnimals();
     }
 
-    // --- 🔥 FETCH LIVE ANIMALS (Dynamic) 🔥 ---
+    function switchTab(tabName) {
+        currentTab = tabName;
+        document.getElementById('tab-buy').classList.remove('active');
+        document.getElementById('tab-my-ads').classList.remove('active');
+        
+        if (tabName === 'buy') {
+            document.getElementById('tab-buy').classList.add('active');
+        } else {
+            document.getElementById('tab-my-ads').classList.add('active');
+        }
+        loadRealMarketAnimals();
+    }
+
     function loadRealMarketAnimals() {
         let container = document.getElementById('animal_list_container');
-        // Fetch real ads from localStorage (which admin or users will add)
         let liveAnimals = JSON.parse(localStorage.getItem('market_animals')) || [];
         
         if(liveAnimals.length === 0) {
-            // Show empty state if no one has added any animal
-            container.innerHTML = `
-                <div style="text-align:center; padding: 40px 20px; color:#888;">
-                    <div style="font-size: 50px; margin-bottom: 10px; filter: grayscale(100%);">🐄</div>
-                    <div style="font-weight:bold; font-size: 16px; color:#555;">सध्या बाजारात कोणतेही जनावर उपलब्ध नाही.</div>
-                    <p style="font-size: 12px; margin-top: 5px;">तुमची जाहिरात देण्यासाठी खालील <b>+</b> बटनावर क्लिक करा!</p>
-                </div>
-            `;
+            container.innerHTML = `<div style="text-align:center; padding: 40px 20px; color:#888;"><div style="font-size: 50px; margin-bottom: 10px; filter: grayscale(100%);">🐄</div><div style="font-weight:bold; font-size: 16px;">सध्या कोणतीही जाहिरात नाही.</div></div>`;
             return;
         }
 
         let html = '';
         liveAnimals.forEach(animal => {
-            // Build real cards based on actual data
-            let urgentBadge = animal.isUrgent ? `<div class="urgent-badge">URGENT</div>` : '';
-            let premiumClass = animal.isUrgent ? `premium` : '';
-            let imageSrc = (animal.images && animal.images[0]) ? animal.images[0] : 'https://via.placeholder.com/600x400?text=No+Photo';
+            let isSold = (animal.status === 'sold');
             
+            // "बाजार" टॅबमध्ये विकलेली जनावरे दाखवायची नाहीत, ती फक्त "माझ्या जाहिराती" मध्ये दिसतील.
+            if(currentTab === 'buy' && isSold) return;
+
+            let urgentBadge = animal.isUrgent ? `<div class="urgent-badge">URGENT</div>` : '';
+            let imageSrc = (animal.images && animal.images[0]) ? animal.images[0] : 'https://via.placeholder.com/600x400?text=No+Photo';
+            let photoCount = animal.images ? animal.images.length : 0;
+            
+            // जनावराच्या फोटोंचा Array स्ट्रिंग मध्ये बदलणे (Viewer साठी)
+            let safeImagesString = encodeURIComponent(JSON.stringify(animal.images || []));
+
+            let actionButtons = '';
+            // "माझ्या जाहिराती" टॅबमध्ये डिलीट आणि सोल्ड बटने दाखवणे
+            if(currentTab === 'my-ads' && !isSold) {
+                actionButtons = `
+                <div class="action-btns">
+                    <button class="sold-btn" onclick="markAsSold(${animal.id})">✅ विकले (Sold)</button>
+                    <button class="delete-btn" onclick="deleteAd(${animal.id})">🗑️ डिलीट (Delete)</button>
+                </div>`;
+            } else if (currentTab === 'my-ads' && isSold) {
+                actionButtons = `<div class="action-btns"><button class="delete-btn" onclick="deleteAd(${animal.id})">🗑️ कायमचे डिलीट करा</button></div>`;
+            }
+
+            let soldOverlay = isSold ? `<div class="sold-overlay"><div class="sold-stamp">SOLD</div></div>` : '';
+            let callButton = !isSold ? `<a href="tel:+91${animal.mobile}" class="call-btn">📞 मालकाला कॉल करा</a>` : '';
+
             html += `
-            <div class="card ${premiumClass}">
+            <div class="card">
                 ${urgentBadge}
-                <div class="card-img">
+                
+                <div class="card-img" onclick="openImageViewer('${safeImagesString}')">
+                    ${soldOverlay}
                     <img src="${imageSrc}" alt="${animal.breed}">
+                    ${photoCount > 1 ? `<div class="photo-count">📸 +${photoCount - 1} फोटो</div>` : ''}
                     <div class="price-tag">₹ ${animal.price}</div>
                 </div>
+                
                 <div class="card-content">
                     <h3 class="card-title">${animal.breed} (${animal.type}) <span class="location">📍 ${animal.location}</span></h3>
                     <div class="details-grid">
@@ -295,64 +263,83 @@
                         <div class="detail-item">दात: <strong>${animal.teeth || '-'}</strong></div>
                         <div class="detail-item">गाभण: <strong>${animal.pregnant || '-'}</strong></div>
                     </div>
-                    <a href="tel:+91${animal.mobile}" class="call-btn">📞 मालकाला कॉल करा</a>
+                    ${callButton}
+                    ${actionButtons}
                 </div>
             </div>`;
         });
         
-        container.innerHTML = html;
+        container.innerHTML = html === '' ? '<div style="text-align:center; padding: 20px; color:#888;">कोणतेही जनावर सापडले नाही.</div>' : html;
     }
 
-
-    // --- 🔥 DYNAMIC PRICING LOGIC 🔥 ---
-    function getSilverPlanPrice() {
-        let adminPrices = JSON.parse(localStorage.getItem('admin_data_M25')) || {};
-        let price = adminPrices.m25_f_silver !== undefined ? parseInt(adminPrices.m25_f_silver) : 99;
-        return price;
+    // --- Image Viewer Logic ---
+    function openImageViewer(encodedImages) {
+        let images = JSON.parse(decodeURIComponent(encodedImages));
+        if(!images || images.length === 0) return;
+        
+        let container = document.getElementById('viewerImagesContainer');
+        container.innerHTML = '';
+        images.forEach(src => {
+            container.innerHTML += `<img src="${src}">`;
+        });
+        document.getElementById('imageViewerModal').style.display = 'flex';
     }
 
-    function switchTab(clickedTab) {
-        document.querySelectorAll('.m-tab').forEach(tab => tab.classList.remove('active'));
-        clickedTab.classList.add('active');
-        
-        if(clickedTab.innerText === 'माझ्या जाहिराती') {
-            alert("तुम्ही टाकलेल्या जाहिराती येथे दिसतील. 'Sold' किंवा 'Delete' करण्याचा पर्याय तिथे असेल.");
-        }
+    function closeImageViewer() {
+        document.getElementById('imageViewerModal').style.display = 'none';
     }
 
-    // --- 🔥 SMART EXPIRY & BANNER LOGIC 🔥 ---
-    function checkActivePlanOnLoad() {
-        let currentPrice = getSilverPlanPrice();
-        
-        document.getElementById('banner_price_text').innerText = currentPrice === 0 ? "मोफत (Free)" : `₹${currentPrice}`;
-        document.getElementById('modal_price_text').innerText = currentPrice === 0 ? "मोफत (Free)" : `₹${currentPrice}`;
-
-        let activePlan = JSON.parse(localStorage.getItem('farmer_active_plan'));
-        let topBanner = document.getElementById('top_upgrade_banner');
-        
-        if (currentPrice === 0) {
-            topBanner.style.display = 'none';
-        } else if (activePlan) {
-            let now = new Date();
-            let expiryDate = new Date(activePlan.expiryDate);
-
-            if (now > expiryDate) {
-                localStorage.removeItem('farmer_active_plan');
-                topBanner.style.display = 'flex'; 
-            } else {
-                topBanner.style.display = 'none'; 
+    // --- Actions Logic ---
+    function markAsSold(id) {
+        if(confirm('हे जनावर नक्की विकले गेले आहे का?')) {
+            let animals = JSON.parse(localStorage.getItem('market_animals')) || [];
+            let index = animals.findIndex(a => a.id === id);
+            if(index !== -1) {
+                animals[index].status = 'sold';
+                localStorage.setItem('market_animals', JSON.stringify(animals));
+                loadRealMarketAnimals();
             }
         }
     }
 
-    // --- 🔥 MASTER CLICK HANDLER (FOR '+' AND BANNER) 🔥 ---
+    function deleteAd(id) {
+        if(confirm('तुम्हाला ही जाहिरात कायमची डिलीट करायची आहे का?')) {
+            let animals = JSON.parse(localStorage.getItem('market_animals')) || [];
+            animals = animals.filter(a => a.id !== id);
+            localStorage.setItem('market_animals', JSON.stringify(animals));
+            loadRealMarketAnimals();
+        }
+    }
+
+    // --- Banner & Plan Logic ---
+    function getSilverPlanPrice() {
+        let adminPrices = JSON.parse(localStorage.getItem('admin_data_M25')) || {};
+        if (adminPrices.m25_f_silver !== undefined && adminPrices.m25_f_silver !== "") {
+            let parsedPrice = parseInt(adminPrices.m25_f_silver);
+            return isNaN(parsedPrice) ? 0 : parsedPrice;
+        }
+        return 99; 
+    }
+
+    function checkActivePlanOnLoad() {
+        let currentPrice = getSilverPlanPrice();
+        document.getElementById('banner_price_text').innerText = currentPrice === 0 ? "मोफत (Free)" : `₹${currentPrice}`;
+        document.getElementById('modal_price_text').innerText = currentPrice === 0 ? "मोफत (Free)" : `₹${currentPrice}`;
+        
+        let activePlan = JSON.parse(localStorage.getItem('farmer_active_plan'));
+        let topBanner = document.getElementById('top_upgrade_banner');
+        
+        if (currentPrice === 0) { topBanner.style.display = 'none'; }
+        else if (activePlan && new Date() <= new Date(activePlan.expiryDate)) { topBanner.style.display = 'none'; }
+        else { topBanner.style.display = 'flex'; }
+    }
+
     function handleAdCreation() {
         let currentPrice = getSilverPlanPrice();
         let activePlan = JSON.parse(localStorage.getItem('farmer_active_plan'));
         
         if (currentPrice === 0) {
-            alert("✅ ॲडमिनने आता जनावर ॲड करणे पूर्णपणे मोफत (Free) केले आहे!\n\n(येथे जनावराचा फोटो आणि माहिती ॲड करण्याचा फॉर्म उघडेल.)");
-            // window.location.href = "add_animal_form.html"; 
+            window.location.href = "add_animal_form.html"; 
             return;
         }
 
@@ -361,8 +348,7 @@
             let expiryDate = new Date(activePlan.expiryDate);
 
             if (now <= expiryDate && (activePlan.name.includes("दिशा प्राईम") || activePlan.name.includes("Market") || activePlan.name.includes("Silver"))) {
-                alert("✅ तुमचे 'दिशा प्राईम / सिल्व्हर' सबस्क्रिप्शन ॲक्टिव्ह आहे.\n\nतुम्ही आता १ महिन्यापर्यंत अमर्यादित (Unlimited) जनावरे ॲड करू शकता.\n\n(येथे जनावराचा फोटो आणि माहिती ॲड करण्याचा फॉर्म उघडेल.)");
-                // window.location.href = "add_animal_form.html"; 
+                window.location.href = "add_animal_form.html"; 
                 return;
             }
         }
@@ -370,7 +356,7 @@
         openAddAnimalModal();
     }
 
-    // --- 🔥 PREMIUM MODAL LOGIC 🔥 ---
+    // --- Payment Modal Logic ---
     function openAddAnimalModal() {
         document.getElementById('btn_init_pay').style.display = 'block';
         document.getElementById('payment_form_section').style.display = 'none';
@@ -413,7 +399,7 @@
         pendingPayments.push({
             farmerName: localStorage.getItem("current_user_name") || "शेतकरी (Market User)",
             mobile: localStorage.getItem("current_user_mobile") || "Unknown",
-            name: "Silver Pack (Market + Pro Ration) - 1 Month",
+            name: "Silver Pack (Market) - 1 Month",
             type: "Monthly",
             amount: amtPaid,
             utr: utr,
